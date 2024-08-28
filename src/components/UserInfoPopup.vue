@@ -1,6 +1,6 @@
 <template>
     <v-container width="400">
-        <v-btn color="primary" type="submit" @click="logout" block class="my-3">Logout</v-btn>
+        <v-btn color="grey" @click="logout" block class="my-3">Logout</v-btn>
 
     </v-container>
 </template>
