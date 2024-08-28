@@ -17,7 +17,8 @@
                         <v-list-subheader>Total Rounds: {{ data.flipCoinRoundsTotal }}</v-list-subheader>
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary">
                             <v-card class="ma-5" prepend-icon="mdi-alpha-c-circle"
-                                :subtitle="`${round.participants} / ${round.participantLimit}`" width="400">
+                                :subtitle="`${round.participants} / ${round.participantLimit}`" width="400"
+                                @click="onJoinRoundClick(round)">
                                 <template v-slot:title>
                                     <span class="font-weight-black">{{ round.roundNumber }}</span>
                                 </template>
@@ -42,6 +43,11 @@
             <UserInfoPopup :onLogoutSuccess="onLogoutSuccess" />
         </template>
     </v-dialog>
+    <v-dialog v-model="data.joinRoundPopup">
+        <template v-slot:default="">
+            <JoinRoundPopup :round="data.joinRound" :onJoinSuccess="onJoinRoundSuccess" />
+        </template>
+    </v-dialog>
 </template>
 
 <script setup>
@@ -49,6 +55,7 @@ import { ref } from 'vue';
 import api from '@/services/api';
 import LoginPopup from '@/components/LoginPopup.vue';
 import UserInfoPopup from '@/components/UserInfoPopup.vue';
+import JoinRoundPopup from '@/components/JoinRoundPopup.vue';
 
 const data = ref({
     loginPopup: false,
@@ -61,8 +68,12 @@ const data = ref({
     flipCoinRoundsPageSize: 10,
     flipCoinRoundsTotal: 0,
     flipCoinRounds: [],
+
+    joinRound: null,
+    joinRoundPopup: false,
 });
 
+onLoginSuccess();
 searchFlipCoinRounds();
 
 function getUserName() {
@@ -117,6 +128,17 @@ async function searchFlipCoinRounds() {
     }
 
     data.value.flipCoinRoundsLoading = false;
+}
+
+function onJoinRoundClick(round) {
+    data.value.joinRound = round;
+    data.value.joinRoundPopup = true;
+}
+
+function onJoinRoundSuccess() {
+
+    data.value.joinRound = null;
+    data.value.joinRoundPopup = false;
 }
 
 </script>
