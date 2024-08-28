@@ -11,18 +11,20 @@
                     Hello! {{ getUserName() }}
                 </v-chip>
             </v-app-bar>
-            <v-container width="600">
+            <v-container class="d-flex justify-center" style="max-width: 800px;">
                 <v-card title="Flip Coin">
                     <v-list density="compact">
                         <v-list-subheader>Total Rounds: {{ data.flipCoinRoundsTotal }}</v-list-subheader>
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary">
-                            <template v-slot:prepend>
-                                <v-card :title="round.roundNumber" width="300">
-                                    <v-card-text>Prize Amont: {{ round.prizeAmount }}</v-card-text>
-                                    <v-card-text>Participants: {{ round.participants }} / {{ round.participantLimit
-                                        }}</v-card-text>
-                                </v-card>
-                            </template>
+                            <v-card class="ma-5" prepend-icon="mdi-alpha-c-circle"
+                                :subtitle="`${round.participants} / ${round.participantLimit}`" width="400">
+                                <template v-slot:title>
+                                    <span class="font-weight-black">{{ round.roundNumber }}</span>
+                                </template>
+                                <v-card-text class="bg-surface-light pt-4">
+                                    Prize Amount: {{ round.prizeAmount }}
+                                </v-card-text>
+                            </v-card>
                         </v-list-item>
                     </v-list>
                 </v-card>
@@ -35,16 +37,24 @@
             <LoginPopup :onCancelClick="onLoginCancelClick" :onLoginSuccess="onLoginSuccess" />
         </template>
     </v-dialog>
+    <v-dialog v-model="data.userInfoPopup">
+        <template v-slot:default="">
+            <UserInfoPopup :onLogoutSuccess="onLogoutSuccess" />
+        </template>
+    </v-dialog>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import api from '@/services/api';
 import LoginPopup from '@/components/LoginPopup.vue';
+import UserInfoPopup from '@/components/UserInfoPopup.vue';
 
 const data = ref({
     loginPopup: false,
     loginUser: null,
+
+    userInfoPopup: false,
 
     flipCoinRoundsLoading: false,
     flipCoinRoundsCurPage: 1,
@@ -63,6 +73,8 @@ function getUserName() {
 function clickUserChip() {
     if (!data.value.loginUser) {
         data.value.loginPopup = true;
+    } else {
+        data.value.userInfoPopup = true;
     }
 }
 
@@ -79,6 +91,11 @@ function onLoginSuccess() {
         };
     }
     data.value.loginPopup = false;
+}
+
+function onLogoutSuccess() {
+    data.value.loginUser = null;
+    data.value.userInfoPopup = false;
 }
 
 async function searchFlipCoinRounds() {
