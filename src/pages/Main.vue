@@ -90,9 +90,9 @@ const data = ref({
 });
 
 refreshAll();
+onLoginSuccess();
 
 async function refreshAll() {
-    onLoginSuccess();
     refreshWallet();
     searchFlipCoinRounds();
 }
@@ -142,10 +142,15 @@ function onLoginSuccess() {
         };
     }
     data.value.loginPopup = false;
+
+    if (!data.value.userWallet) {
+        refreshWallet();
+    }
 }
 
 function onLogoutSuccess() {
     data.value.loginUser = null;
+    data.value.userWallet = null;
     data.value.userInfoPopup = false;
     refreshAll();
 }
