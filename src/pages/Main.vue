@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-main>
-            <v-app-bar title="Game Nerd">
+            <v-app-bar title="Kai Games">
                 <template v-slot:prepend>
                     <v-icon icon="mdi-nintendo-game-boy" class="mx-3"></v-icon>
                 </template>
