@@ -16,23 +16,28 @@
                 </v-chip>
             </v-app-bar>
             <v-container class="d-flex justify-center" style="max-width: 800px;">
+
                 <v-card title="Flip Coin" max-width="600">
                     <v-list density="compact">
                         <v-list-subheader class="my-3">
                             <v-btn prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{
                                 data.flipCoinRoundsTotal }}</v-btn>
                         </v-list-subheader>
+
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
+
                             <v-card class="ma-5" prepend-icon="mdi-alpha-c-circle"
                                 :subtitle="`${round.participants} / ${round.participantLimit}`" width="400"
                                 @click="onJoinRoundClick(round)" :disabled="round.ableToSettle || round.settle"
                                 :color="round.ableToSettle || round.settle ? '' : 'green'">
-                                <v-card-title class="d-flex justify-space-between align-center">
-                                    <span class="font-weight-black">{{ round.roundNumber }}</span>
-                                    <span v-if="round.settleTime" class="font-weight-black text-right">{{
-                                        getDateText(round.settleTime) }}</span>
-                                </v-card-title>
+                                <v-badge v-if="round.participant" color="error" content="Joined!">
+                                    <v-card-title class="d-flex justify-space-between align-center">
+                                        <span class="font-weight-black">{{ round.roundNumber }}</span>
+                                        <span v-if="round.settleTime" class="font-weight-black text-right">{{
+                                            getDateText(round.settleTime) }}</span>
+                                    </v-card-title>
+                                </v-badge>
                                 <v-card-text class="bg-surface-light pt-3">
                                     <p>Start Time: {{ getDateText(round.startTime) }}</p>
                                     <p>End Time: {{ getDateText(round.endTime) }}</p>
@@ -58,7 +63,7 @@
     </v-dialog>
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :onJoinSuccess="onJoinRoundSuccess" />
+            <JoinRoundPopup :round="data.joinRound" :participant="data.roundParticipant" :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
 </template>
@@ -86,6 +91,7 @@ const data = ref({
     flipCoinRounds: [],
 
     joinRound: null,
+    roundParticipant: null,
     joinRoundPopup: false,
 });
 
@@ -180,6 +186,7 @@ async function searchFlipCoinRounds() {
 
 function onJoinRoundClick(round) {
     data.value.joinRound = round;
+    data.value.roundParticipant = round.participant;
     data.value.joinRoundPopup = true;
 }
 
