@@ -1,10 +1,15 @@
 <template>
     <v-container>
-        <v-card width="380" height="380" class="mx-auto d-flex flex-column" v-if="props.round">
-            <v-card-title v-if="!props.participant" class="d-flex justify-center align-center">Would you want to join {{
-                props.round.roundNumber }} !?</v-card-title>
-            <v-card-title v-if="props.participant" class="d-flex justify-center align-center">Participation Detail of {{
-                props.round.roundNumber }}</v-card-title>
+        <v-card v-if="props.round" width="380" height="380" class="mx-auto d-flex flex-column">
+            <!-- Title Section -->
+            <v-card-title v-if="!props.participant" class="d-flex justify-center align-center">
+                Would you want to join {{ props.round.roundNumber }} !?
+            </v-card-title>
+            <v-card-title v-else class="d-flex justify-center align-center">
+                Participation Detail of {{ props.round.roundNumber }}
+            </v-card-title>
+
+            <!-- Participant Information -->
             <v-card-subtitle v-if="props.participant" class="d-flex justify-center align-center">
                 {{ props.participant.traceId }}
             </v-card-subtitle>
@@ -13,7 +18,7 @@
             </v-card-text>
             <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
 
-            <!-- joinRound params -->
+            <!-- Join Round Section -->
             <v-card v-if="!props.participant" class="mx-auto d-flex flex-column" width="300">
                 <v-switch v-model="data.joinRoundParam.flip"
                     :label="data.joinRoundParam.flip ? 'You decide to flip once' : 'You decide to not to touch it'"
@@ -24,11 +29,13 @@
                 <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
                     label="Bet Amount" clearable></v-text-field>
             </v-card>
-            <v-btn v-if="!props.participant" class="rounded-0 ma-auto" color="green" @click="joinRound" block
-                width="200" height="30" :disabled="!data.joinRoundParam.betAmount">Join Round</v-btn>
 
-            <!-- joined information -->
-            <v-card color="red" v-else>
+            <v-btn v-if="!props.participant" class="rounded-0 ma-auto" color="green" @click="joinRound" block
+                width="200" height="30" :disabled="!data.joinRoundParam.betAmount">
+                Join Round
+            </v-btn>
+            <!-- Joined Information -->
+            <v-card v-else color="red">
                 <v-card-title class="d-flex justify-center align-center">
                     {{ getFlipContent(props.participant.flip) }}
                 </v-card-title>
@@ -40,6 +47,7 @@
         </v-card>
     </v-container>
 </template>
+
 
 <script setup>
 import { ref } from 'vue';
