@@ -1,22 +1,20 @@
 <template>
     <v-app>
+        <v-app-bar title="Kai Games" app fixed>
+            <template v-slot:prepend>
+                <v-icon icon="mdi-nintendo-game-boy" class="mx-3"></v-icon>
+            </template>
+            <v-spacer></v-spacer>
+            <v-chip v-if="data.userWallet" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
+                {{ data.userWallet.balance }}
+            </v-chip>
+            <v-chip class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
+                :disabled="data.flipCoinRoundsLoading">
+                Hello! {{ getUserName() }}
+            </v-chip>
+        </v-app-bar>
         <v-main>
-            <v-app-bar title="Kai Games">
-                <template v-slot:prepend>
-                    <v-icon icon="mdi-nintendo-game-boy" class="mx-3"></v-icon>
-                </template>
-
-                <v-spacer></v-spacer>
-                <v-chip v-if="data.userWallet" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
-                    {{ data.userWallet.balance }}
-                </v-chip>
-                <v-chip class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
-                    :disabled="data.flipCoinRoundsLoading">
-                    Hello! {{ getUserName() }}
-                </v-chip>
-            </v-app-bar>
             <v-container class="d-flex justify-center" style="max-width: 800px;">
-
                 <v-card title="Flip Coin" max-width="600">
                     <v-list density="compact">
                         <v-list-subheader class="my-3">
@@ -40,7 +38,8 @@
                                     <p>Start Time: {{ getDateText(round.startTime) }}</p>
                                     <p>End Time: {{ getDateText(round.endTime) }}</p>
                                     <h1>Prize Amount: {{ round.prizeAmount }}</h1>
-                                    <v-badge v-if="round.participant" color="error" content="Joined !" inline class="flip-scale-up-ver">
+                                    <v-badge v-if="round.participant" color="error" content="Joined !" inline
+                                        class="flip-scale-up-ver">
                                         <span></span>
                                     </v-badge>
                                 </v-card-text>
