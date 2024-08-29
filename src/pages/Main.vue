@@ -7,10 +7,11 @@
                 </template>
 
                 <v-spacer></v-spacer>
-                <v-chip class="ma-2" prepend-icon="mdi-gold">
-                    99999.99
+                <v-chip v-if="data.userWallet" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
+                    {{ data.userWallet.balance }}
                 </v-chip>
-                <v-chip class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip">
+                <v-chip class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
+                    :disabled="data.flipCoinRoundsLoading">
                     Hello! {{ getUserName() }}
                 </v-chip>
             </v-app-bar>
@@ -18,7 +19,8 @@
                 <v-card title="Flip Coin" max-width="600">
                     <v-list density="compact">
                         <v-list-subheader class="my-3">
-                            <v-btn prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{ data.flipCoinRoundsTotal }}</v-btn>
+                            <v-btn prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{
+                                data.flipCoinRoundsTotal }}</v-btn>
                         </v-list-subheader>
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
@@ -73,6 +75,8 @@ const data = ref({
     loginPopup: false,
     loginUser: null,
 
+    userWallet: null,
+
     userInfoPopup: false,
 
     flipCoinRoundsLoading: false,
@@ -85,11 +89,31 @@ const data = ref({
     joinRoundPopup: false,
 });
 
-onLoginSuccess();
-searchFlipCoinRounds();
+refreshAll();
+
+async function refreshAll() {
+    onLoginSuccess();
+    refreshWallet();
+    searchFlipCoinRounds();
+}
 
 function getDateText(timestamp) {
     return converter.transferFromTimestamp(timestamp);
+}
+
+async function refreshWallet() {
+    if (!data.value.loginUser) {
+        return;
+    }
+
+    try {
+        const result = await api.get('/user/money/getInfo');
+        if (result) {
+            data.value.userWallet = result;
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 function getUserName() {
@@ -123,6 +147,7 @@ function onLoginSuccess() {
 function onLogoutSuccess() {
     data.value.loginUser = null;
     data.value.userInfoPopup = false;
+    refreshAll();
 }
 
 async function searchFlipCoinRounds() {
@@ -135,10 +160,12 @@ async function searchFlipCoinRounds() {
         };
 
         const result = await api.post('/user/game/flipCoin/findRounds', request);
-        data.value.flipCoinRounds = result.content;
-        data.value.flipCoinRoundsCurPage = result.pageable.pageNumber + 1; // server page started from 0
-        data.value.flipCoinRoundsPageSize = result.pageable.pageSize;
-        data.value.flipCoinRoundsTotal = result.totalElements;
+        if (result) {
+            data.value.flipCoinRounds = result.content;
+            data.value.flipCoinRoundsCurPage = result.pageable.pageNumber + 1; // server page started from 0
+            data.value.flipCoinRoundsPageSize = result.pageable.pageSize;
+            data.value.flipCoinRoundsTotal = result.totalElements;
+        }
     } catch (err) {
         console.error(err);
     }
@@ -154,7 +181,7 @@ function onJoinRoundClick(round) {
 function onJoinRoundSuccess() {
     // data.value.joinRound = null;
     data.value.joinRoundPopup = false;
-    searchFlipCoinRounds();
+    refreshAll();
 }
 
 </script>
