@@ -1,0 +1,25 @@
+.flip-scale-up-ver {
+    animation: flip-scale-up-ver 0.5s linear both;
+}
+
+@keyframes flip-scale-up-ver {
+    0% {
+        transform: scale(1) rotateY(0);
+    }
+
+    25% {
+        transform: scale(1.8) rotateY(90deg);
+    }
+
+    50% {
+        transform: scale(2.5) rotateY(180deg);
+    }
+
+    75% {
+        transform: scale(1.8) rotateY(270deg);
+    }
+
+    100% {
+        transform: scale(1) rotateY(360deg);
+    }
+}

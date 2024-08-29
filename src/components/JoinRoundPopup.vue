@@ -13,6 +13,9 @@
             </v-card-text>
             <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
             <v-spacer class="my-3"></v-spacer>
+            <!-- joinRound params -->
+
+            <!-- joined information -->
             <v-card color="grey" v-if="props.participant">
                 <v-card-title class="d-flex justify-center align-center">
                     {{ getFlipContent(props.participant.flip) }}

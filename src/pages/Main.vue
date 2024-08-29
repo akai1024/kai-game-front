@@ -40,7 +40,7 @@
                                     <p>Start Time: {{ getDateText(round.startTime) }}</p>
                                     <p>End Time: {{ getDateText(round.endTime) }}</p>
                                     <h1>Prize Amount: {{ round.prizeAmount }}</h1>
-                                    <v-badge v-if="round.participant" color="error" content="Joined !" inline>
+                                    <v-badge v-if="round.participant" color="error" content="Joined !" inline class="flip-scale-up-ver">
                                         <span></span>
                                     </v-badge>
                                 </v-card-text>
