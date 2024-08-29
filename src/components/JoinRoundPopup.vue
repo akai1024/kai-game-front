@@ -1,14 +1,14 @@
 <template>
     <v-container>
-        <v-card width="400" height="400" class="mx-auto d-flex flex-column">
+        <v-card width="400" height="400" class="mx-auto d-flex flex-column" v-if="props.round">
             <v-card-title class="d-flex justify-center align-center">Would you want to join {{ props.round.roundNumber }} !?</v-card-title>
             <v-card-text color="grey" class="d-flex justify-center align-center">
                 Current Total Prize Amount:
             </v-card-text>
             <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
             <v-spacer class="my-3"></v-spacer>
-            <v-btn class="rounded-0 mt-auto" color="green" @click="joinRound" block width="200"
-                height="200">Join Round</v-btn>
+            <v-btn class="rounded-0 mt-auto" color="green" @click="joinRound" block width="200" height="200">Join
+                Round</v-btn>
         </v-card>
     </v-container>
 </template>

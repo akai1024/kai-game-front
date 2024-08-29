@@ -12,18 +12,26 @@
                 </v-chip>
             </v-app-bar>
             <v-container class="d-flex justify-center" style="max-width: 800px;">
-                <v-card title="Flip Coin">
+                <v-card title="Flip Coin" max-width="600">
                     <v-list density="compact">
-                        <v-list-subheader>Total Rounds: {{ data.flipCoinRoundsTotal }}</v-list-subheader>
-                        <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary">
+                        <v-list-subheader class="my-3">
+                            <v-btn prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{ data.flipCoinRoundsTotal }}</v-btn>
+                        </v-list-subheader>
+                        <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
+                            class="d-flex justify-center">
                             <v-card class="ma-5" prepend-icon="mdi-alpha-c-circle"
                                 :subtitle="`${round.participants} / ${round.participantLimit}`" width="400"
-                                @click="onJoinRoundClick(round)">
-                                <template v-slot:title>
+                                @click="onJoinRoundClick(round)" :disabled="round.ableToSettle || round.settle"
+                                :color="round.ableToSettle || round.settle ? '' : 'green'">
+                                <v-card-title class="d-flex justify-space-between align-center">
                                     <span class="font-weight-black">{{ round.roundNumber }}</span>
-                                </template>
-                                <v-card-text class="bg-surface-light pt-4">
-                                    Prize Amount: {{ round.prizeAmount }}
+                                    <span v-if="round.settleTime" class="font-weight-black text-right">{{
+                                        getDateText(round.settleTime) }}</span>
+                                </v-card-title>
+                                <v-card-text class="bg-surface-light pt-3">
+                                    <p>Start Time: {{ getDateText(round.startTime) }}</p>
+                                    <p>End Time: {{ getDateText(round.endTime) }}</p>
+                                    <h1>Prize Amount: {{ round.prizeAmount }}</h1>
                                 </v-card-text>
                             </v-card>
                         </v-list-item>
@@ -53,6 +61,7 @@
 <script setup>
 import { ref } from 'vue';
 import api from '@/services/api';
+import converter from '@/services/converter';
 import LoginPopup from '@/components/LoginPopup.vue';
 import UserInfoPopup from '@/components/UserInfoPopup.vue';
 import JoinRoundPopup from '@/components/JoinRoundPopup.vue';
@@ -75,6 +84,10 @@ const data = ref({
 
 onLoginSuccess();
 searchFlipCoinRounds();
+
+function getDateText(timestamp) {
+    return converter.transferFromTimestamp(timestamp);
+}
 
 function getUserName() {
     const user = data.value.loginUser;
@@ -136,9 +149,9 @@ function onJoinRoundClick(round) {
 }
 
 function onJoinRoundSuccess() {
-
-    data.value.joinRound = null;
+    // data.value.joinRound = null;
     data.value.joinRoundPopup = false;
+    searchFlipCoinRounds();
 }
 
 </script>
