@@ -88,7 +88,7 @@ const data = ref({
 
     flipCoinRoundsLoading: false,
     flipCoinRoundsCurPage: 1,
-    flipCoinRoundsPageSize: 10,
+    flipCoinRoundsPageSize: 200,
     flipCoinRoundsTotal: 0,
     flipCoinRounds: [],
 

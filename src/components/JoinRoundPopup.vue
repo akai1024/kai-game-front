@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card width="400" height="400" class="mx-auto d-flex flex-column" v-if="props.round">
+        <v-card width="380" height="380" class="mx-auto d-flex flex-column" v-if="props.round">
             <v-card-title v-if="!props.participant" class="d-flex justify-center align-center">Would you want to join {{
                 props.round.roundNumber }} !?</v-card-title>
             <v-card-title v-if="props.participant" class="d-flex justify-center align-center">Participation Detail of {{
@@ -12,21 +12,31 @@
                 Current Total Prize Amount:
             </v-card-text>
             <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
-            <v-spacer class="my-3"></v-spacer>
+
             <!-- joinRound params -->
+            <v-card v-if="!props.participant" class="mx-auto d-flex flex-column" width="300">
+                <v-switch v-model="data.joinRoundParam.flip"
+                    :label="data.joinRoundParam.flip ? 'You decide to flip once' : 'You decide to not to touch it'"
+                    hide-details inset class="ma-auto d-flex flex-column"></v-switch>
+                <v-switch v-model="data.joinRoundParam.betFlipResult"
+                    :label="` You Bet On ${getFlipResult(data.joinRoundParam.betFlipResult)}`" hide-details inset
+                    class="ma-auto d-flex flex-column"></v-switch>
+                <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
+                    label="Bet Amount" clearable></v-text-field>
+            </v-card>
+            <v-btn v-if="!props.participant" class="rounded-0 ma-auto" color="green" @click="joinRound" block
+                width="200" height="30" :disabled="!data.joinRoundParam.betAmount">Join Round</v-btn>
 
             <!-- joined information -->
-            <v-card color="grey" v-if="props.participant">
+            <v-card color="red" v-else>
                 <v-card-title class="d-flex justify-center align-center">
                     {{ getFlipContent(props.participant.flip) }}
                 </v-card-title>
                 <v-card-text class="d-flex justify-center align-center">
-                    and paid ${{ props.participant.betAmount }} to bet the result is
+                    and paid ${{ props.participant.betAmount }} to bet the result will be
                     {{ getFlipResult(props.participant.betAmount) }}
                 </v-card-text>
             </v-card>
-            <v-btn v-if="!props.participant" class="rounded-0 mt-auto" color="green" @click="joinRound" block
-                width="200" height="200">Join Round</v-btn>
         </v-card>
     </v-container>
 </template>
@@ -51,7 +61,11 @@ const props = defineProps({
 });
 
 const data = ref({
-
+    joinRoundParam: {
+        flip: false,
+        betAmount: 0,
+        betFlipResult: false,
+    },
 });
 
 function getFlipResult(result) {
@@ -66,9 +80,9 @@ async function joinRound() {
     try {
         const request = {
             roundNumber: props.round.roundNumber,
-            flip: true,
-            betFlipResult: true,
-            betAmount: '3.00',
+            flip: data.value.joinRoundParam.flip,
+            betFlipResult: data.value.joinRoundParam.betFlipResult,
+            betAmount: data.value.joinRoundParam.betAmount,
         };
 
         const result = await api.post('/user/game/flipCoin/joinRound', request);
