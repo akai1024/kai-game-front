@@ -35,10 +35,11 @@
                 Join Round
             </v-btn>
             <!-- Joined Information -->
-            <v-card v-else color="red">
+            <v-card v-else color="red" height="200">
                 <v-card-title class="d-flex justify-center align-center">
                     {{ getFlipContent(props.participant.flip) }}
                 </v-card-title>
+                <v-spacer></v-spacer>
                 <v-card-text class="d-flex justify-center align-center">
                     and paid ${{ props.participant.betAmount }} to bet the result will be
                     {{ getFlipResult(props.participant.betAmount) }}
