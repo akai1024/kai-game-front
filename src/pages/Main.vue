@@ -7,6 +7,9 @@
                 </template>
 
                 <v-spacer></v-spacer>
+                <v-chip class="ma-2" prepend-icon="mdi-gold">
+                    99999.99
+                </v-chip>
                 <v-chip class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip">
                     Hello! {{ getUserName() }}
                 </v-chip>
