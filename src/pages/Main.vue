@@ -31,17 +31,18 @@
                                 :subtitle="`${round.participants} / ${round.participantLimit}`" width="400"
                                 @click="onJoinRoundClick(round)" :disabled="round.ableToSettle || round.settle"
                                 :color="round.ableToSettle || round.settle ? '' : 'green'">
-                                <v-badge v-if="round.participant" color="error" content="Joined!">
-                                    <v-card-title class="d-flex justify-space-between align-center">
-                                        <span class="font-weight-black">{{ round.roundNumber }}</span>
-                                        <span v-if="round.settleTime" class="font-weight-black text-right">{{
-                                            getDateText(round.settleTime) }}</span>
-                                    </v-card-title>
-                                </v-badge>
+                                <v-card-title class="d-flex justify-space-between align-center">
+                                    <span class="font-weight-black">{{ round.roundNumber }}</span>
+                                    <span v-if="round.settleTime" class="font-weight-black text-right">{{
+                                        getDateText(round.settleTime) }}</span>
+                                </v-card-title>
                                 <v-card-text class="bg-surface-light pt-3">
                                     <p>Start Time: {{ getDateText(round.startTime) }}</p>
                                     <p>End Time: {{ getDateText(round.endTime) }}</p>
                                     <h1>Prize Amount: {{ round.prizeAmount }}</h1>
+                                    <v-badge v-if="round.participant" color="error" content="Joined !" inline>
+                                        <span></span>
+                                    </v-badge>
                                 </v-card-text>
                             </v-card>
                         </v-list-item>
@@ -63,7 +64,8 @@
     </v-dialog>
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :participant="data.roundParticipant" :onJoinSuccess="onJoinRoundSuccess" />
+            <JoinRoundPopup :round="data.joinRound" :participant="data.roundParticipant"
+                :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
 </template>
