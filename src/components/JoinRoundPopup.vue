@@ -1,22 +1,21 @@
 <template>
     <v-container>
-        <v-card v-if="props.round" width="380" height="380" class="mx-auto d-flex flex-column">
+        <v-card v-if="props.round" width="380" class="mx-auto d-flex flex-column">
             <v-container v-if="props.round.participant">
                 <v-card-title class="d-flex justify-center align-center">
                     Participation Detail of {{ props.round.roundNumber }}
                 </v-card-title>
                 <v-card-subtitle class="d-flex justify-center align-center">
-                    {{ props.round.participant.traceId }}
+                    Trace Id: {{ props.round.participant.traceId }}
                 </v-card-subtitle>
                 <v-card-text class="d-flex justify-center align-center">
                     Current Total Prize Amount:
                 </v-card-text>
-                <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
-                <v-card color="red" height="200">
+                <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
+                <v-card color="secondary" height="100">
                     <v-card-title class="d-flex justify-center align-center">
                         {{ getFlipContent(props.round.participant.flip) }}
                     </v-card-title>
-                    <v-spacer></v-spacer>
                     <v-card-text class="d-flex justify-center align-center">
                         and paid ${{ props.round.participant.betAmount }} to bet the result will be
                         {{ getFlipResult(props.round.participant.betAmount) }}
@@ -25,13 +24,13 @@
             </v-container>
             <v-container v-else>
                 <v-card-title class="d-flex justify-center align-center">
-                    Would you want to join {{ props.round.roundNumber }} !?
+                    Do you want to join {{ props.round.roundNumber }} !?
                 </v-card-title>
                 <v-card-text class="d-flex justify-center align-center">
                     Current Total Prize Amount:
                 </v-card-text>
-                <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
-                <v-card class="mx-auto d-flex flex-column" width="300">
+                <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
+                <v-card class="mx-auto d-flex flex-column">
                     <v-switch v-model="data.joinRoundParam.flip"
                         :label="data.joinRoundParam.flip ? 'You decide to flip once' : 'You decide to not to touch it'"
                         hide-details inset class="ma-auto d-flex flex-column"></v-switch>
@@ -41,7 +40,7 @@
                     <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
                         label="Bet Amount" clearable></v-text-field>
                 </v-card>
-                <v-btn color="green" @click="joinRound" block height="50"
+                <v-btn color="green" @click="joinRound" block height="100"
                     :disabled="!data.joinRoundParam.betAmount">
                     Join Round
                 </v-btn>

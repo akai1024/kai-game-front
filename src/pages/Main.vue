@@ -25,14 +25,13 @@
                     <v-list density="compact">
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
-                            <v-card :color="getRoundColor(round)" class="my-1">
+                            <v-card :color="getRoundColor(round)" class="my-1" @click="onJoinRoundClick(round)">
                                 <v-card-title>
                                     <v-chip>
                                         <h2>{{ round.roundNumber }}</h2>
                                     </v-chip>
                                     <v-badge v-if="round.participant" color="yellow-darken-4"
-                                        :content="getJoinedMarkContent(round)" inline
-                                        class="flip-scale-up-ver ml-3">
+                                        :content="getJoinedMarkContent(round)" inline class="flip-scale-up-ver ml-3">
                                         <span></span>
                                     </v-badge>
                                 </v-card-title>
@@ -42,8 +41,7 @@
                                     <v-spacer></v-spacer>
                                     <span v-if="round.settleTime">Settled at {{ getDateText(round.settleTime) }}</span>
                                 </v-card-subtitle>
-                                <v-card class="mt-2" width="400" @click="onJoinRoundClick(round)"
-                                    :disabled="round.ableToSettle || round.settle">
+                                <v-card class="mt-2" width="400" :disabled="round.ableToSettle || round.settle">
                                     <v-card-text class="bg-surface-light pt-3">
                                         <p>Start Time: {{ getDateText(round.startTime) }}</p>
                                         <p>End Time: {{ getDateText(round.endTime) }}</p>
@@ -70,8 +68,7 @@
     </v-dialog>
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound"
-                :onJoinSuccess="onJoinRoundSuccess" />
+            <JoinRoundPopup :round="data.joinRound" :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
 </template>
@@ -124,7 +121,7 @@ function getRoundColor(round) {
     if (round.settled) {
         return 'red-darken-2';
     } else if (round.ableToSettle) {
-        return 'pink-lighten-2';
+        return 'red-lighten-2';
     } else if (round.opening) {
         return 'green-darken-1';
     }
@@ -212,6 +209,10 @@ async function searchFlipCoinRounds() {
 }
 
 function onJoinRoundClick(round) {
+    if (round.settled) {
+        return;
+    }
+
     data.value.joinRound = round;
     data.value.joinRoundPopup = true;
 }
