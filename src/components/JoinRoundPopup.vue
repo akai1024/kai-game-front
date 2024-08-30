@@ -26,7 +26,7 @@
                     </v-card-text>
                 </v-card>
             </v-container>
-            <v-container v-if="props.round.opening">
+            <v-container v-else>
                 <v-card-title class="d-flex justify-center align-center">
                     Do you want to join {{ props.round.roundNumber }} !?
                 </v-card-title>

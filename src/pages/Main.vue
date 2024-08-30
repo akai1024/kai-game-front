@@ -25,7 +25,7 @@
                     <v-list density="compact">
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
-                            <v-card :color="getRoundColor(round)" class="my-1" @click="onJoinRoundClick(round)">
+                            <v-card class="my-1" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
                                 <v-card-title>
                                     <v-chip>
                                         <h2>{{ round.roundNumber }}</h2>
@@ -209,8 +209,10 @@ async function searchFlipCoinRounds() {
 }
 
 function onJoinRoundClick(round) {
-    data.value.joinRound = round;
-    data.value.joinRoundPopup = true;
+    if (round.opening || round.participant) {
+        data.value.joinRound = round;
+        data.value.joinRoundPopup = true;
+    }
 }
 
 function onJoinRoundSuccess() {
