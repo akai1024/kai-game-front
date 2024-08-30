@@ -95,7 +95,6 @@ const data = ref({
     joinRoundPopup: false,
 });
 
-refreshAll();
 onLoginSuccess();
 
 async function refreshAll() {
@@ -109,6 +108,7 @@ function getDateText(timestamp) {
 
 async function refreshWallet() {
     if (!data.value.loginUser) {
+        data.value.userWallet = null;
         return;
     }
 
@@ -119,6 +119,7 @@ async function refreshWallet() {
         }
     } catch (err) {
         console.error(err);
+        onLoginSuccess();
     }
 }
 
@@ -146,6 +147,8 @@ function onLoginSuccess() {
             account: localStorageUser.account,
             userId: localStorageUser.userId,
         };
+    } else {
+        data.value.loginUser = null;
     }
     data.value.loginPopup = false;
 
@@ -177,6 +180,7 @@ async function searchFlipCoinRounds() {
         }
     } catch (err) {
         console.error(err);
+        onLoginSuccess();
     }
 
     data.value.flipCoinRoundsLoading = false;

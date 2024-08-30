@@ -57,43 +57,17 @@ export default {
     }
   },
 
-  // PUT 請求
-  async put(url, data = {}, headers = {}) {
-    try {
-      const authHeader = this.getAuthHeader();
-      const response = await api.put(url, data, {
-        headers: { ...authHeader, ...headers }
-      });
-      return this.handleResponse(response);
-    } catch (error) {
-      return this.handleError(error);
-    }
-  },
-
-  // DELETE 請求
-  async delete(url, headers = {}) {
-    try {
-      const authHeader = this.getAuthHeader();
-      const response = await api.delete(url, {
-        headers: { ...authHeader, ...headers }
-      });
-      return this.handleResponse(response);
-    } catch (error) {
-      return this.handleError(error);
-    }
-  },
-
   // 處理響應
   handleResponse(response) {
     const respCode = response.code;
     const errorCode = response.errorCode;
     if (respCode === 0) {
       return response.data;
-    } else if (respCode === 1000 && errorCode === '000005') {
-      console.log('invalid token');
-      localStorage.removeItem('localStorageUser');
-      throw new Error(response.message);
     } else {
+      if (respCode === 1000 && errorCode === '000006') {
+        console.log('invalid token');
+        localStorage.removeItem('localStorageUser');
+      }
       throw new Error(response.message);
     }
   },
