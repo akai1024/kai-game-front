@@ -2,7 +2,7 @@
     <v-app>
         <v-app-bar title="Kai Games" app fixed>
             <template v-slot:prepend>
-                <v-icon icon="mdi-nintendo-game-boy" class="mx-3"></v-icon>
+                <v-icon icon="mdi-nintendo-game-boy" class="ml-3"></v-icon>
             </template>
             <v-chip v-if="data.userWallet" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
                 {{ data.userWallet.balance }}
@@ -16,27 +16,31 @@
             <v-container class="d-flex justify-center" style="max-width: 800px;">
                 <v-card max-width="600">
                     <v-card-title>
+                        <v-icon>mdi-alpha-c-circle</v-icon>
                         Flip Coin
-                        <v-btn class="ml-15" prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{
-                            data.flipCoinRoundsTotal }}</v-btn>
+                        <v-btn class="ml-10" color="blue-lighten-1" prepend-icon="mdi-refresh"
+                            @click="searchFlipCoinRounds">Total Rounds: {{
+                                data.flipCoinRoundsTotal }}</v-btn>
                     </v-card-title>
                     <v-list density="compact">
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
-                            <v-card :color="round.ableToSettle ? 'pink' : round.settle ? 'error' : 'green'">
+                            <v-card :color="getRoundColor(round)" class="my-1">
                                 <v-card-title>
                                     <v-chip>
                                         <h2>{{ round.roundNumber }}</h2>
                                     </v-chip>
-                                    <v-badge v-if="round.participant" color="red" content="Joined !" inline
+                                    <v-badge v-if="round.participant" color="yellow-darken-4"
+                                        :content="getJoinedMarkContent(round)" inline
                                         class="flip-scale-up-ver ml-3">
                                         <span></span>
                                     </v-badge>
                                 </v-card-title>
                                 <v-card-subtitle>
                                     <span class="mr-3">Participants: {{ `${round.participants} /
-                                        ${round.participantLimit}`}}</span>
-                                    <span v-if="round.settleTime">Settled: {{ getDateText(round.settleTime) }}</span>
+                                        ${round.participantLimit}` }}</span>
+                                    <v-spacer></v-spacer>
+                                    <span v-if="round.settleTime">Settled at {{ getDateText(round.settleTime) }}</span>
                                 </v-card-subtitle>
                                 <v-card class="mt-2" width="400" @click="onJoinRoundClick(round)"
                                     :disabled="round.ableToSettle || round.settle">
@@ -66,7 +70,7 @@
     </v-dialog>
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :participant="data.roundParticipant"
+            <JoinRoundPopup :round="data.joinRound"
                 :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
@@ -95,7 +99,6 @@ const data = ref({
     flipCoinRounds: [],
 
     joinRound: null,
-    roundParticipant: null,
     joinRoundPopup: false,
 });
 
@@ -108,6 +111,24 @@ async function refreshAll() {
 
 function getDateText(timestamp) {
     return converter.transferFromTimestamp(timestamp);
+}
+
+function getJoinedMarkContent(round) {
+    if (round.participant && round.settled) {
+        return round.participant.winAmount > 0 ? 'Win !' : 'Lose';
+    }
+    return 'Joined !';
+}
+
+function getRoundColor(round) {
+    if (round.settled) {
+        return 'red-darken-2';
+    } else if (round.ableToSettle) {
+        return 'pink-lighten-2';
+    } else if (round.opening) {
+        return 'green-darken-1';
+    }
+    return 'primary';
 }
 
 async function refreshWallet() {
@@ -192,12 +213,10 @@ async function searchFlipCoinRounds() {
 
 function onJoinRoundClick(round) {
     data.value.joinRound = round;
-    data.value.roundParticipant = round.participant;
     data.value.joinRoundPopup = true;
 }
 
 function onJoinRoundSuccess() {
-    // data.value.joinRound = null;
     data.value.joinRoundPopup = false;
     refreshAll();
 }
