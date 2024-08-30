@@ -18,30 +18,34 @@
                     <v-card-title>
                         Flip Coin
                         <v-btn class="ml-15" prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{
-                                data.flipCoinRoundsTotal }}</v-btn>
+                            data.flipCoinRoundsTotal }}</v-btn>
                     </v-card-title>
                     <v-list density="compact">
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
-
-                            <v-card class="my-2" prepend-icon="mdi-alpha-c-circle"
-                                :subtitle="`${round.participants} / ${round.participantLimit}`" width="400"
-                                @click="onJoinRoundClick(round)" :disabled="round.ableToSettle || round.settle"
-                                :color="round.ableToSettle || round.settle ? '' : 'green'">
-                                <v-card-title class="d-flex justify-space-between align-center">
-                                    <span class="font-weight-black">{{ round.roundNumber }}</span>
-                                    <span v-if="round.settleTime" class="font-weight-black text-right">{{
-                                        getDateText(round.settleTime) }}</span>
-                                </v-card-title>
-                                <v-card-text class="bg-surface-light pt-3">
-                                    <p>Start Time: {{ getDateText(round.startTime) }}</p>
-                                    <p>End Time: {{ getDateText(round.endTime) }}</p>
-                                    <h1>Prize Amount: {{ round.prizeAmount }}</h1>
-                                    <v-badge v-if="round.participant" color="error" content="Joined !" inline
-                                        class="flip-scale-up-ver">
+                            <v-card :color="round.ableToSettle ? 'pink' : round.settle ? 'error' : 'green'">
+                                <v-card-title>
+                                    <v-chip>
+                                        <h2>{{ round.roundNumber }}</h2>
+                                    </v-chip>
+                                    <v-badge v-if="round.participant" color="red" content="Joined !" inline
+                                        class="flip-scale-up-ver ml-3">
                                         <span></span>
                                     </v-badge>
-                                </v-card-text>
+                                </v-card-title>
+                                <v-card-subtitle>
+                                    <span class="mr-3">Participants: {{ `${round.participants} /
+                                        ${round.participantLimit}`}}</span>
+                                    <span v-if="round.settleTime">Settled: {{ getDateText(round.settleTime) }}</span>
+                                </v-card-subtitle>
+                                <v-card class="mt-2" width="400" @click="onJoinRoundClick(round)"
+                                    :disabled="round.ableToSettle || round.settle">
+                                    <v-card-text class="bg-surface-light pt-3">
+                                        <p>Start Time: {{ getDateText(round.startTime) }}</p>
+                                        <p>End Time: {{ getDateText(round.endTime) }}</p>
+                                        <h1>Prize Amount: {{ round.prizeAmount }}</h1>
+                                    </v-card-text>
+                                </v-card>
                             </v-card>
                         </v-list-item>
                     </v-list>
