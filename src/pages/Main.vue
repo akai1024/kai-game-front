@@ -209,10 +209,6 @@ async function searchFlipCoinRounds() {
 }
 
 function onJoinRoundClick(round) {
-    if (round.settled) {
-        return;
-    }
-
     data.value.joinRound = round;
     data.value.joinRoundPopup = true;
 }

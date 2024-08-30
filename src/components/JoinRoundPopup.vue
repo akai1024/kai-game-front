@@ -11,8 +11,9 @@
                 <v-card-text class="d-flex justify-center align-center">
                     Current Total Prize Amount:
                 </v-card-text>
-                <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
-                <v-card color="secondary" height="100">
+                <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
+                <v-spacer class="my-5"></v-spacer>
+                <v-card color="secondary" class="my-1">
                     <v-card-title class="d-flex justify-center align-center">
                         {{ getFlipContent(props.round.participant.flip) }}
                     </v-card-title>
@@ -20,9 +21,12 @@
                         and paid ${{ props.round.participant.betAmount }} to bet the result will be
                         {{ getFlipResult(props.round.participant.betAmount) }}
                     </v-card-text>
+                    <v-card-text v-if="props.round.settled && props.round.participant.winAmount > 0" class="d-flex justify-center align-center">
+                        <h1>and WIN {{ props.round.participant.winAmount }} !!!</h1>
+                    </v-card-text>
                 </v-card>
             </v-container>
-            <v-container v-else>
+            <v-container v-if="props.round.opening">
                 <v-card-title class="d-flex justify-center align-center">
                     Do you want to join {{ props.round.roundNumber }} !?
                 </v-card-title>
@@ -30,7 +34,8 @@
                     Current Total Prize Amount:
                 </v-card-text>
                 <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
-                <v-card class="mx-auto d-flex flex-column">
+                <v-spacer class="my-5"></v-spacer>
+                <v-card class="my-1 d-flex flex-column">
                     <v-switch v-model="data.joinRoundParam.flip"
                         :label="data.joinRoundParam.flip ? 'You decide to flip once' : 'You decide to not to touch it'"
                         hide-details inset class="ma-auto d-flex flex-column"></v-switch>
