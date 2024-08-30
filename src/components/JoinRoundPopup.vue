@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-        <v-card v-if="props.round" width="380" class="mx-auto d-flex flex-column">
+    <v-container class="pa-0">
+        <v-card v-if="props.round" width="380" >
             <v-container v-if="props.round.participant">
                 <v-card-title class="d-flex justify-center align-center">
                     Participation Detail of {{ props.round.roundNumber }}

@@ -1,5 +1,5 @@
 <template>
-    <v-container width="400">
+    <v-container width="380" class="pa-0">
         <v-card class="mx-auto" prepend-icon="mdi-account">
             <template v-slot:title>
                 <span class="font-weight-black">Login</span>

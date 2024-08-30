@@ -4,8 +4,8 @@
             <template v-slot:prepend>
                 <v-icon icon="mdi-nintendo-game-boy" class="ml-3"></v-icon>
             </template>
-            <v-chip v-if="data.userWallet" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
-                {{ data.userWallet.balance }}
+            <v-chip v-if="data.loginUser" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
+                {{ getWalletBalance() }}
             </v-chip>
             <v-chip class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
                 :disabled="data.flipCoinRoundsLoading">
@@ -22,35 +22,39 @@
                             @click="searchFlipCoinRounds">Total Rounds: {{
                                 data.flipCoinRoundsTotal }}</v-btn>
                     </v-card-title>
-                    <v-list density="compact">
-                        <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
-                            class="d-flex justify-center">
-                            <v-card class="my-1" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
-                                <v-card-title>
-                                    <v-chip>
-                                        <h2>{{ round.roundNumber }}</h2>
-                                    </v-chip>
-                                    <v-badge v-if="round.participant" color="yellow-darken-4"
-                                        :content="getJoinedMarkContent(round)" inline class="flip-scale-up-ver ml-3">
-                                        <span></span>
-                                    </v-badge>
-                                </v-card-title>
-                                <v-card-subtitle>
-                                    <span class="mr-3">Participants: {{ `${round.participants} /
-                                        ${round.participantLimit}` }}</span>
-                                    <v-spacer></v-spacer>
-                                    <span v-if="round.settleTime">Settled at {{ getDateText(round.settleTime) }}</span>
-                                </v-card-subtitle>
-                                <v-card class="mt-2" width="400" :disabled="round.ableToSettle || round.settle">
-                                    <v-card-text class="bg-surface-light pt-3">
-                                        <p>Start Time: {{ getDateText(round.startTime) }}</p>
-                                        <p>End Time: {{ getDateText(round.endTime) }}</p>
-                                        <h1>Prize Amount: {{ round.prizeAmount }}</h1>
-                                    </v-card-text>
+                    <PageBottomElement :bottomTriggerMethod="scrollPage">
+                        <v-list density="compact">
+                            <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round"
+                                color="primary" class="d-flex justify-center">
+                                <v-card class="my-1" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
+                                    <v-card-title>
+                                        <v-chip>
+                                            <h2>{{ round.roundNumber }}</h2>
+                                        </v-chip>
+                                        <v-badge v-if="round.participant" color="yellow-darken-4"
+                                            :content="getJoinedMarkContent(round)" inline
+                                            class="flip-scale-up-ver ml-3">
+                                            <span></span>
+                                        </v-badge>
+                                    </v-card-title>
+                                    <v-card-subtitle>
+                                        <span class="mr-3">Participants: {{ `${round.participants} /
+                                            ${round.participantLimit}` }}</span>
+                                        <v-spacer></v-spacer>
+                                        <span v-if="round.settleTime">Settled at {{ getDateText(round.settleTime)
+                                            }}</span>
+                                    </v-card-subtitle>
+                                    <v-card class="mt-2" width="400" :disabled="round.ableToSettle || round.settle">
+                                        <v-card-text class="bg-surface-light pt-3">
+                                            <p>Start Time: {{ getDateText(round.startTime) }}</p>
+                                            <p>End Time: {{ getDateText(round.endTime) }}</p>
+                                            <h1>Prize Amount: {{ round.prizeAmount }}</h1>
+                                        </v-card-text>
+                                    </v-card>
                                 </v-card>
-                            </v-card>
-                        </v-list-item>
-                    </v-list>
+                            </v-list-item>
+                        </v-list>
+                    </PageBottomElement>
                 </v-card>
             </v-container>
         </v-main>
@@ -71,6 +75,7 @@
             <JoinRoundPopup :round="data.joinRound" :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
+
 </template>
 
 <script setup>
@@ -80,6 +85,7 @@ import converter from '@/services/converter';
 import LoginPopup from '@/components/LoginPopup.vue';
 import UserInfoPopup from '@/components/UserInfoPopup.vue';
 import JoinRoundPopup from '@/components/JoinRoundPopup.vue';
+import PageBottomElement from '@/components/PageBottomElement.vue';
 
 const data = ref({
     loginPopup: false,
@@ -90,8 +96,7 @@ const data = ref({
     userInfoPopup: false,
 
     flipCoinRoundsLoading: false,
-    flipCoinRoundsCurPage: 1,
-    flipCoinRoundsPageSize: 200,
+    flipCoinRoundsPageSize: 5,
     flipCoinRoundsTotal: 0,
     flipCoinRounds: [],
 
@@ -103,7 +108,7 @@ onLoginSuccess();
 
 async function refreshAll() {
     refreshWallet();
-    searchFlipCoinRounds();
+    searchFlipCoinRounds(true);
 }
 
 function getDateText(timestamp) {
@@ -145,6 +150,10 @@ async function refreshWallet() {
     }
 }
 
+function getWalletBalance() {
+    return data.value.userWallet ? data.value.userWallet.balance : 0;
+}
+
 function getUserName() {
     const user = data.value.loginUser;
     return user ? user.account : 'Guest';
@@ -184,21 +193,49 @@ function onLogoutSuccess() {
     refreshAll();
 }
 
-async function searchFlipCoinRounds() {
+async function scrollPage() {
+    if (data.value.flipCoinRoundsLoading) {
+        return;
+    }
+    searchFlipCoinRounds();
+}
+
+async function searchFlipCoinRounds(isClickRefresh) {
     data.value.flipCoinRoundsLoading = true;
 
     try {
-        const request = {
-            pageNo: data.value.flipCoinRoundsCurPage,
-            pageSize: data.value.flipCoinRoundsPageSize,
-        };
+        const curRoundSize = data.value.flipCoinRounds.length;
+        let request;
+        let skipResultSize = 0;
+        if (isClickRefresh) {
+            request = {
+                pageNo: 1,
+                pageSize: curRoundSize,
+            };
+        } else {
+            const pageSize = data.value.flipCoinRoundsPageSize;
+            const curPage = Math.floor(curRoundSize / pageSize) + 1;
+            skipResultSize = curRoundSize % pageSize;
+            request = {
+                pageNo: curPage,
+                pageSize: pageSize,
+            };
+        }
 
         const result = await api.post('/user/game/flipCoin/findRounds', request);
         if (result) {
-            data.value.flipCoinRounds = result.content;
-            data.value.flipCoinRoundsCurPage = result.pageable.pageNumber + 1; // server page started from 0
-            data.value.flipCoinRoundsPageSize = result.pageable.pageSize;
-            data.value.flipCoinRoundsTotal = result.totalElements;
+            if (isClickRefresh) {
+                data.value.flipCoinRounds = result.content;
+            } else {
+                if (result.content.length > 0) {
+                    const newAddedContent = result.content.slice(skipResultSize);
+                    data.value.flipCoinRounds.push(...newAddedContent);
+                    data.value.flipCoinRoundsPageSize = result.pageable.pageSize;
+                    data.value.flipCoinRoundsTotal = result.totalElements;
+                } else {
+
+                }
+            }
         }
     } catch (err) {
         console.error(err);

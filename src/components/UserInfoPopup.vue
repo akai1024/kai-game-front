@@ -1,5 +1,5 @@
 <template>
-    <v-container width="400">
+    <v-container width="380" class="pa-0">
         <v-btn color="grey" @click="logout" block class="my-3">Logout</v-btn>
 
     </v-container>
