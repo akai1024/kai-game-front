@@ -232,8 +232,6 @@ async function searchFlipCoinRounds(isClickRefresh) {
                     data.value.flipCoinRounds.push(...newAddedContent);
                     data.value.flipCoinRoundsPageSize = result.pageable.pageSize;
                     data.value.flipCoinRoundsTotal = result.totalElements;
-                } else {
-
                 }
             }
         }
