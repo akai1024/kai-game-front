@@ -1,6 +1,6 @@
 <template>
     <v-container class="pa-0">
-        <v-card v-if="props.round" width="380" >
+        <v-card v-if="props.round" width="380">
             <v-container v-if="props.round.participant">
                 <v-card-title class="d-flex justify-center align-center">
                     Participation Detail of {{ props.round.roundNumber }}
@@ -21,7 +21,8 @@
                         and paid ${{ props.round.participant.betAmount }} to bet the result will be
                         {{ getFlipResult(props.round.participant.betAmount) }}
                     </v-card-text>
-                    <v-card-text v-if="props.round.settled && props.round.participant.winAmount > 0" class="d-flex justify-center align-center">
+                    <v-card-text v-if="props.round.settled && props.round.participant.winAmount > 0"
+                        class="d-flex justify-center align-center">
                         <h1>and WIN {{ props.round.participant.winAmount }} !!!</h1>
                     </v-card-text>
                 </v-card>
@@ -45,9 +46,8 @@
                     <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
                         label="Bet Amount" clearable></v-text-field>
                 </v-card>
-                <v-btn color="green" @click="joinRound" block height="100"
-                    :disabled="!data.joinRoundParam.betAmount">
-                    Join Round
+                <v-btn color="green" @click="joinRound" block height="100" :disabled="joinRoundBtnDisabled()">
+                    {{ getJoinBtnText() }}
                 </v-btn>
             </v-container>
         </v-card>
@@ -84,6 +84,15 @@ function getFlipResult(result) {
 
 function getFlipContent(flip) {
     return flip ? 'You decided to flip once!' : 'You decided to not to touch it';
+}
+
+function getJoinBtnText() {
+    return props.round.participants >= props.round.participantLimit ?
+        'This round is full' : 'Join Round';
+}
+
+function joinRoundBtnDisabled() {
+    return props.round.participants >= props.round.participantLimit || !data.value.joinRoundParam.betAmount;
 }
 
 async function joinRound() {
