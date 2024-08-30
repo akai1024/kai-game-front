@@ -73,7 +73,7 @@ const props = defineProps({
 const data = ref({
     joinRoundParam: {
         flip: false,
-        betAmount: 0,
+        betAmount: null,
         betFlipResult: false,
     },
 });
@@ -83,7 +83,7 @@ function getFlipResult(result) {
 }
 
 function getFlipContent(flip) {
-    return flip ? 'You decided to flip once!' : 'You decided to not to touch it...';
+    return flip ? 'You decided to flip once!' : 'You decided to not to touch it';
 }
 
 async function joinRound() {
