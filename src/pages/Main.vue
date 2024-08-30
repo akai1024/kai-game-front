@@ -4,7 +4,6 @@
             <template v-slot:prepend>
                 <v-icon icon="mdi-nintendo-game-boy" class="mx-3"></v-icon>
             </template>
-            <v-spacer></v-spacer>
             <v-chip v-if="data.userWallet" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
                 {{ data.userWallet.balance }}
             </v-chip>
@@ -15,17 +14,17 @@
         </v-app-bar>
         <v-main>
             <v-container class="d-flex justify-center" style="max-width: 800px;">
-                <v-card title="Flip Coin" max-width="600">
-                    <v-list density="compact">
-                        <v-list-subheader class="my-3">
-                            <v-btn prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{
+                <v-card max-width="600">
+                    <v-card-title>
+                        Flip Coin
+                        <v-btn class="ml-15" prepend-icon="mdi-refresh" @click="searchFlipCoinRounds">Total Rounds: {{
                                 data.flipCoinRoundsTotal }}</v-btn>
-                        </v-list-subheader>
-
+                    </v-card-title>
+                    <v-list density="compact">
                         <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                             class="d-flex justify-center">
 
-                            <v-card class="ma-5" prepend-icon="mdi-alpha-c-circle"
+                            <v-card class="my-2" prepend-icon="mdi-alpha-c-circle"
                                 :subtitle="`${round.participants} / ${round.participantLimit}`" width="400"
                                 @click="onJoinRoundClick(round)" :disabled="round.ableToSettle || round.settle"
                                 :color="round.ableToSettle || round.settle ? '' : 'green'">
@@ -150,9 +149,7 @@ function onLoginSuccess() {
     }
     data.value.loginPopup = false;
 
-    if (!data.value.userWallet) {
-        refreshWallet();
-    }
+    refreshAll();
 }
 
 function onLogoutSuccess() {
