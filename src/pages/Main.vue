@@ -1,30 +1,32 @@
 <template>
     <v-app>
-        <v-app-bar title="Kai Games" app fixed>
-            <template v-slot:prepend>
-                <v-icon icon="mdi-nintendo-game-boy" class="ml-3"></v-icon>
-            </template>
-            <v-chip v-if="data.loginUser" class="ma-2" prepend-icon="mdi-gold" @click="refreshWallet">
-                {{ getWalletBalance() }}
-            </v-chip>
-            <v-menu transition="slide-y-transition">
-                <template v-slot:activator="{ props }">
-                    <v-chip v-bind="props" class="ma-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
-                        :disabled="data.flipCoinRoundsLoading">
-                        Hello! {{ getUserName() }}
-                    </v-chip>
-                </template>
-                <UserInfoPopup v-if="data.loginUser" :onLogoutSuccess="onLogoutSuccess" />
-            </v-menu>
-
-        </v-app-bar>
-        <v-main>
-            <v-container class="d-flex justify-center" style="max-width: 800px;">
-                <template #default>
-                    <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" />
-                </template>
-            </v-container>
-        </v-main>
+        <v-layout>
+            <v-app-bar>
+                <v-app-bar-nav-icon>
+                    <v-icon icon="mdi-nintendo-game-boy" class="pa-3"></v-icon>
+                </v-app-bar-nav-icon>
+                <v-toolbar-title>Kai Games</v-toolbar-title>
+                <v-chip v-if="data.loginUser" class="mr-1" prepend-icon="mdi-gold" @click="refreshWallet">
+                    {{ getWalletBalance() }}
+                </v-chip>
+                <v-menu transition="slide-y-transition">
+                    <template v-slot:activator="{ props }">
+                        <v-chip v-bind="props" class="mr-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
+                            :disabled="data.flipCoinRoundsLoading">
+                            Hello! {{ getUserName() }}
+                        </v-chip>
+                    </template>
+                    <UserInfoPopup v-if="data.loginUser" :onLogoutSuccess="onLogoutSuccess" />
+                </v-menu>
+            </v-app-bar>
+            <v-main>
+                <v-container class="d-flex justify-center" style="max-width: 800px;">
+                    <template #default>
+                        <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" />
+                    </template>
+                </v-container>
+            </v-main>
+        </v-layout>
     </v-app>
 
     <v-dialog persistent v-model="data.loginPopup">
@@ -38,7 +40,6 @@
 <script setup>
 import { ref } from 'vue';
 import api from '@/services/api';
-import converter from '@/services/converter';
 import LoginPopup from '@/components/LoginPopup.vue';
 import UserInfoPopup from '@/components/UserInfoPopup.vue';
 import FlipCoinRoundPage from './FlipCoinRoundPage.vue';
@@ -114,3 +115,10 @@ function onLogoutSuccess() {
 }
 
 </script>
+
+<style scoped>
+.v-main {
+    height: 100vh;
+    overflow-y: auto;
+}
+</style>
