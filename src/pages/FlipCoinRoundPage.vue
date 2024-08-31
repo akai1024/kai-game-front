@@ -111,13 +111,13 @@ async function scrollPage() {
     searchFlipCoinRounds(false);
 }
 
-async function searchFlipCoinRounds(isRefreshAllElement) {
+async function searchFlipCoinRounds(isRefreshTop) {
     data.value.flipCoinRoundsLoading = true;
 
     try {
         let request;
         let skipResultSize = 0;
-        if (isRefreshAllElement) {
+        if (isRefreshTop) {
             request = {
                 pageNo: 1,
                 pageSize: null, // not assigned, let server return the default size
@@ -135,7 +135,7 @@ async function searchFlipCoinRounds(isRefreshAllElement) {
 
         const result = await api.post('/user/game/flipCoin/findRounds', request);
         if (result) {
-            if (isRefreshAllElement) {
+            if (isRefreshTop) {
                 data.value.flipCoinRounds = result.content;
             } else {
                 if (result.content.length > 0) {
