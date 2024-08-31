@@ -1,5 +1,5 @@
 <template>
-    <v-card max-width="600">
+    <v-card max-width="600" class="mx-auto">
         <v-card-title class="d-flex align-center">
             <v-icon>mdi-wallet</v-icon>
             <span class="mx-5">Transactions</span>
@@ -8,32 +8,34 @@
         </v-card-title>
 
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
-            <v-list density="compact" width="400" class="pa-0">
-                <v-list-item v-for="(tx, i) in data.transactions" :key="i" :value="tx" color="primary"
-                    class="d-flex justify-center">
-                    <v-card class="my-1" width="368" :color="getTxColor(tx)">
+            <v-list density="compact" class="pa-0">
+                <v-list-item v-for="(tx, i) in data.transactions" :key="i" :value="tx" color="primary">
+                    <v-card :color="getTxColor(tx)" class="my-1 w-100">
                         <v-card-title>
-                            <v-row>
-                                <v-col>
+                            <v-row no-gutters align="center">
+                                <v-col cols="auto">
                                     <v-chip>
-                                        <h2>{{ converter.moneyChangeTypeText(tx.changeType) }}</h2>
+                                        <h3>{{ converter.moneyChangeTypeText(tx.changeType) }}</h3>
                                     </v-chip>
                                 </v-col>
-                                <v-col class="d-flex flex-row-reverse pa-4">
-                                    <v-chip variant="outlined px-3">
-                                        <h1>{{ getMoneyChangeAmountText(tx) }}</h1>
+                                <v-spacer></v-spacer>
+                                <v-col cols="auto">
+                                    <v-chip variant="outlined" class="px-3">
+                                        <h3>{{ getMoneyChangeAmountText(tx) }}</h3>
                                     </v-chip>
                                 </v-col>
                             </v-row>
                         </v-card-title>
+
                         <v-card-subtitle>
-                            <p class="mr-3">Trace Id: {{ tx.id }}</p>
+                            <p class="mb-0">Trace Id: {{ tx.id }}</p>
                         </v-card-subtitle>
+
                         <v-card class="mt-2">
                             <v-card-text class="bg-surface-light pt-3">
-                                <p>Change Time: {{ getDateText(tx.createTime) }}</p>
-                                <p>Before Balance: {{ tx.beforeBalance }}</p>
-                                <p>After Balance: {{ tx.afterBalance }}</p>
+                                <p class="mb-1">Change Time: {{ getDateText(tx.createTime) }}</p>
+                                <p class="mb-1">Before Balance: {{ tx.beforeBalance }}</p>
+                                <p class="mb-0">After Balance: {{ tx.afterBalance }}</p>
                             </v-card-text>
                         </v-card>
                     </v-card>
