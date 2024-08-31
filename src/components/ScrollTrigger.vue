@@ -17,7 +17,11 @@ export default {
         bottomTriggerMethod: {
             type: Function,
             required: false
-        }
+        },
+        debugConsoleLog: {
+            type: Boolean,
+            required: false
+        },
     },
     data() {
         return {
@@ -72,13 +76,19 @@ export default {
             this.observer.observe(this.$refs.bottomElement);
         },
         onReachTop() {
-            // console.log('已經到達頂部！');
+            if (this.debugConsoleLog) {
+                console.log('已經到達頂部！');
+            }
+
             if (this.topTriggerMethod) {
                 this.topTriggerMethod();
             }
         },
         onReachBottom() {
-            // console.log('已經到達底部！');
+            if (this.debugConsoleLog) {
+                console.log('已經到達底部！');
+            }
+
             if (this.bottomTriggerMethod) {
                 this.bottomTriggerMethod();
             }

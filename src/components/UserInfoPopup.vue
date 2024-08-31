@@ -1,7 +1,14 @@
 <template>
-    <v-container width="380" class="pa-0">
-        <v-btn color="grey" @click="logout" block class="my-3">Logout</v-btn>
-
+    <v-container width="300" height="200" class="pa-0 ma-1">
+        <v-card>
+            <v-card-title></v-card-title>
+            <v-card-text></v-card-text>
+            <v-btn color="grey" class="mx-auto my-1 d-flex">Money Change History</v-btn>
+            <v-divider class="mt-5"></v-divider>
+            <v-card-actions>
+                <v-btn color="grey" @click="logout" block>Logout</v-btn>
+            </v-card-actions>
+        </v-card>
     </v-container>
 </template>
 
