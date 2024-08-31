@@ -2,7 +2,7 @@
     <v-app>
         <v-layout>
             <v-app-bar>
-                <v-app-bar-nav-icon @click="switchToGameHome">
+                <v-app-bar-nav-icon>
                     <v-icon icon="mdi-nintendo-game-boy" class="pa-3"></v-icon>
                 </v-app-bar-nav-icon>
                 <v-toolbar-title>Kai Games</v-toolbar-title>
@@ -22,7 +22,7 @@
             </v-app-bar>
             <v-main>
                 <v-container class="d-flex justify-center" style="max-width: 800px;">
-                    <component :is="dynamicComponent" :loginUser="data.loginUser" />
+                    <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" />
                 </v-container>
             </v-main>
         </v-layout>
@@ -37,17 +37,13 @@
 </template>
 
 <script setup>
-import { ref, defineAsyncComponent, computed, provide } from 'vue';
+import { ref } from 'vue';
 import api from '@/services/api';
 import LoginPopup from '@/components/LoginPopup.vue';
 import UserInfoPopup from '@/components/UserInfoPopup.vue';
 import FlipCoinRoundPage from './FlipCoinRoundPage.vue';
 import TransactionsPage from './TransactionsPage.vue';
 
-const components = {
-    FlipCoinRoundPage,
-    TransactionsPage
-};
 
 const data = ref({
     loginPopup: false,
@@ -55,34 +51,7 @@ const data = ref({
 
     userWallet: null,
 
-    currentComponent: 'FlipCoinRoundPage',
 });
-
-// 動態組件定義
-const dynamicComponent = computed(() => {
-    return defineAsyncComponent(() => {
-        console.log('Loading component:', data.value.currentComponent);
-        return Promise.resolve(components[data.value.currentComponent]);
-    });
-});
-
-// 切換組件的方法
-function switchComponent(componentName) {
-    console.log('Switching to component:', componentName);
-    data.value.currentComponent = componentName;
-}
-
-function switchToGameHome() {
-    switchComponent('FlipCoinRoundPage');
-}
-
-function switchToTransactionsPage() {
-    switchComponent('TransactionsPage');
-}
-
-// 提供 switchComponent 方法給所有子組件
-provide('switchToGameHome', switchToGameHome);
-provide('switchToTransactionsPage', switchToTransactionsPage);
 
 onLoginSuccess();
 

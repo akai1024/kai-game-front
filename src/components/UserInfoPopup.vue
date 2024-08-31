@@ -4,7 +4,7 @@
             <v-card-title></v-card-title>
             <v-card-text></v-card-text>
             <v-btn prepend-icon="mdi-account-cash" color="grey" class="mx-auto my-1 d-flex" height="50" @click="onDepositClick">Deposit</v-btn>
-            <v-btn prepend-icon="mdi-wallet" color="grey" class="mx-auto my-1 d-flex" @click="switchContentToTransactions">Transactions</v-btn>
+            <v-btn prepend-icon="mdi-wallet" color="grey" class="mx-auto my-1 d-flex">Transactions</v-btn>
             <v-divider class="mt-5"></v-divider>
             <v-card-actions>
                 <v-btn prepend-icon="mdi-logout" color="grey" @click="logout" block>Logout</v-btn>
@@ -14,10 +14,9 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import api from '@/services/api';
 
-const switchToTransactionsPage = inject('switchToTransactionsPage');
 
 const props = defineProps({
     onDepositSuccess: {
@@ -37,9 +36,6 @@ const data = ref({
 
 });
 
-function switchContentToTransactions() {
-    switchToTransactionsPage();
-}
 
 async function onDepositClick() {
     if (data.value.processDeposit) {
