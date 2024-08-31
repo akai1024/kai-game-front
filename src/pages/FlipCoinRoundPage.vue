@@ -1,41 +1,37 @@
 <template>
-    <v-card max-width="600">
-        <v-card-title class="d-flex align-center">
-            <v-icon>mdi-alpha-c-circle</v-icon>
-            <span class="mx-5">Flip Coin</span>
+    <v-card max-width="600" class="mx-auto">
+        <v-card-title class="d-flex align-center pa-4">
+            <v-icon size="28" class="mr-2">mdi-alpha-c-circle</v-icon>
+            <span class="text-h6">Flip Coin</span>
             <v-spacer></v-spacer>
             <v-chip>{{ `Total Rounds: ${data.flipCoinRoundsTotal}` }}</v-chip>
         </v-card-title>
-
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
-            <v-list density="compact" width="400" class="pa-0">
-                <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
-                    class="d-flex justify-center">
-                    <v-card class="my-1" width="400" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
-                        <v-card-title>
-                            <v-chip variant="outlined">
-                                <h2>{{ round.roundNumber }}</h2>
+            <v-list density="compact" class="pa-0" width="400">
+                <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary">
+                    <v-card class="my-1 w-100" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
+                        <v-card-title class="py-2">
+                            <v-chip variant="outlined" class="mr-2">
+                                <span class="text-h6">{{ round.roundNumber }}</span>
                             </v-chip>
                             <v-chip v-if="round.participant" variant="elevated" color="yellow-darken-4"
-                                class="flip-scale-up-ver ml-3 opacity-90">
+                                class="flip-scale-up-ver mr-2">
                                 {{ getJoinedMarkContent(round) }}
                             </v-chip>
                         </v-card-title>
-                        <v-card-subtitle>
-                            <span class="mr-3">Participants: {{ `${round.participants} /
-                                ${round.participantLimit}` }}</span>
-                            <span v-if="round.settleTime">Settled at {{ getDateText(round.settleTime)
-                                }}</span>
+                        <v-card-subtitle class="py-1">
+                            <p class="mr-3">Participants: {{ `${round.participants} / ${round.participantLimit}`
+                                }}</p>
+                            <p v-if="round.settleTime">Settled at {{ getDateText(round.settleTime) }}</p>
                         </v-card-subtitle>
                         <v-card class="mt-2" :disabled="round.ableToSettle || round.settle">
-                            <v-card-text class="bg-surface-light pt-3">
-                                <p>Start Time: {{ getDateText(round.startTime) }}</p>
-                                <p>End Time: {{ getDateText(round.endTime) }}</p>
-                                <h1 class="my-2">Prize Amount: {{ round.prizeAmount }}</h1>
-                                <p>
-                                    <v-spacer></v-spacer>
-                                    <v-chip>updated {{ getTimeAgo(round.updateTime) }}</v-chip>
-                                </p>
+                            <v-card-text class="bg-surface-light pa-3">
+                                <p class="mb-1">Start Time: {{ getDateText(round.startTime) }}</p>
+                                <p class="mb-1">End Time: {{ getDateText(round.endTime) }}</p>
+                                <h3 class="my-2">Prize Amount: {{ round.prizeAmount }}</h3>
+                                <div class="d-flex justify-end mt-2">
+                                    <v-chip size="small">updated {{ getTimeAgo(round.updateTime) }}</v-chip>
+                                </div>
                             </v-card-text>
                         </v-card>
                     </v-card>
@@ -50,6 +46,8 @@
         </template>
     </v-dialog>
 </template>
+
+
 
 <script setup>
 import { ref, defineProps, watch } from 'vue';
