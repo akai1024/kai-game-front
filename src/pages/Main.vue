@@ -17,12 +17,11 @@
                 <v-card max-width="600">
                     <v-card-title>
                         <v-icon>mdi-alpha-c-circle</v-icon>
-                        Flip Coin
-                        <v-btn class="ml-10" color="blue-lighten-1" prepend-icon="mdi-refresh"
-                            @click="searchFlipCoinRounds">Total Rounds: {{
-                                data.flipCoinRoundsTotal }}</v-btn>
+                        <v-badge class="my-1" :content="`Total Rounds: ${data.flipCoinRoundsTotal}`">
+                            <span class="mx-5">Flip Coin</span>
+                        </v-badge>
                     </v-card-title>
-                    <PageBottomElement :bottomTriggerMethod="scrollPage">
+                    <ScrollTrigger :topTriggerMethod="refreshAll" :bottomTriggerMethod="scrollPage">
                         <v-list density="compact">
                             <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round"
                                 color="primary" class="d-flex justify-center">
@@ -54,7 +53,7 @@
                                 </v-card>
                             </v-list-item>
                         </v-list>
-                    </PageBottomElement>
+                    </ScrollTrigger>
                 </v-card>
             </v-container>
         </v-main>
@@ -85,7 +84,7 @@ import converter from '@/services/converter';
 import LoginPopup from '@/components/LoginPopup.vue';
 import UserInfoPopup from '@/components/UserInfoPopup.vue';
 import JoinRoundPopup from '@/components/JoinRoundPopup.vue';
-import PageBottomElement from '@/components/PageBottomElement.vue';
+import ScrollTrigger from '@/components/ScrollTrigger.vue';
 
 const data = ref({
     loginPopup: false,
@@ -231,9 +230,9 @@ async function searchFlipCoinRounds(isClickRefresh) {
                     const newAddedContent = result.content.slice(skipResultSize);
                     data.value.flipCoinRounds.push(...newAddedContent);
                     data.value.flipCoinRoundsPageSize = result.pageable.pageSize;
-                    data.value.flipCoinRoundsTotal = result.totalElements;
                 }
             }
+            data.value.flipCoinRoundsTotal = result.totalElements;
         }
     } catch (err) {
         console.error(err);

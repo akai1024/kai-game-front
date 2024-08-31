@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div ref="topElement"></div>
         <slot></slot>
         <div ref="bottomElement"></div>
     </div>
@@ -7,8 +8,12 @@
 
 <script>
 export default {
-    name: 'BottomTrigger',
+    name: 'ScrollTrigger',
     props: {
+        topTriggerMethod: {
+            type: Function,
+            required: false
+        },
         bottomTriggerMethod: {
             type: Function,
             required: false
@@ -54,12 +59,23 @@ export default {
             this.observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        this.onReachBottom();
+                        if (entry.target === this.$refs.topElement) {
+                            this.onReachTop();
+                        } else if (entry.target === this.$refs.bottomElement) {
+                            this.onReachBottom();
+                        }
                     }
                 })
             }, options)
 
+            this.observer.observe(this.$refs.topElement);
             this.observer.observe(this.$refs.bottomElement);
+        },
+        onReachTop() {
+            // console.log('已經到達頂部！');
+            if (this.topTriggerMethod) {
+                this.topTriggerMethod();
+            }
         },
         onReachBottom() {
             // console.log('已經到達底部！');
