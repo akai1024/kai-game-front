@@ -1,7 +1,7 @@
 <template>
-    <div class="flip-coin" @click="flipCoin" :class="{ 'flipping': isFlipping }">
+    <div class="flip-coin" @click="flipCoin" :class="{ disabled: isDisabled, 'flipping': isFlipping }">
         <div class="coin-inner">
-            <div class="coin-front">
+            <div class="coin-back">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                     <defs>
                         <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -39,7 +39,7 @@
                         stroke-dasharray="10 5" />
                 </svg>
             </div>
-            <div class="coin-back">
+            <div class="coin-front">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                     <defs>
                         <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -86,17 +86,39 @@
 <script>
 export default {
     name: 'FlipCoin',
+    props: {
+        isDisabled: {
+            type: Boolean,
+            default: false
+        },
+        initialSide: {
+            type: Boolean,
+            default: true // true for showing the front side initially, false for the back side
+        }
+    },
     data() {
         return {
             isFlipping: false
         }
     },
+    mounted() {
+        // Set the initial side based on the `initialSide` prop
+        this.flipTo(this.initialSide);
+    },
     methods: {
+        flipTo(isFlipping) {
+            this.isFlipping = isFlipping;
+        },
+
         flipCoin() {
+            if (this.isDisabled) {
+                return;
+            }
+
             this.isFlipping = !this.isFlipping;
             this.$emit('flip', this.isFlipping); // emit event and deliver isFlipping value
-        }
-    }
+        },
+    },
 }
 </script>
 

@@ -17,6 +17,9 @@
                     <v-card-title class="d-flex justify-center align-center">
                         {{ getFlipContent(props.round.participant.flip) }}
                     </v-card-title>
+                    <div class="d-flex justify-center align-center my-3">
+                        <FlipCoin :isDisabled="true" :initialSide="props.round.participant.betResult"/>
+                    </div>
                     <v-card-text class="d-flex justify-center align-center">
                         and paid ${{ props.round.participant.betAmount }} to bet the result will be
                         {{ getFlipResult(props.round.participant.betResult) }}
