@@ -19,7 +19,7 @@
                     </v-card-title>
                     <v-card-text class="d-flex justify-center align-center">
                         and paid ${{ props.round.participant.betAmount }} to bet the result will be
-                        {{ getFlipResult(props.round.participant.betAmount) }}
+                        {{ getFlipResult(props.round.participant.betResult) }}
                     </v-card-text>
                     <v-card-text v-if="props.round.settled && props.round.participant.winAmount > 0"
                         class="d-flex justify-center align-center">
@@ -36,13 +36,14 @@
                 </v-card-text>
                 <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
                 <v-spacer class="my-5"></v-spacer>
+                <div class="d-flex justify-center align-center my-3">
+                    <FlipCoin @flip="handleFlipEvent" />
+                    <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
+                </div>
                 <v-card class="my-1 d-flex flex-column">
                     <v-switch v-model="data.joinRoundParam.flip"
                         :label="data.joinRoundParam.flip ? 'You decide to flip once' : 'You decide to not to touch it'"
                         hide-details inset class="ma-auto d-flex flex-column"></v-switch>
-                    <v-switch v-model="data.joinRoundParam.betFlipResult"
-                        :label="` You Bet On ${getFlipResult(data.joinRoundParam.betFlipResult)}`" hide-details inset
-                        class="ma-auto d-flex flex-column"></v-switch>
                     <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
                         label="Bet Amount" clearable></v-text-field>
                 </v-card>
@@ -58,6 +59,7 @@
 <script setup>
 import { ref } from 'vue';
 import api from '@/services/api';
+import FlipCoin from '@/assets/flipCoin/FlipCoin.vue';
 
 const props = defineProps({
     round: {
@@ -77,6 +79,10 @@ const data = ref({
         betFlipResult: false,
     },
 });
+
+function handleFlipEvent(newState) {
+    data.value.joinRoundParam.betFlipResult = newState;
+}
 
 function getFlipResult(result) {
     return result ? 'Face' : 'Back';
