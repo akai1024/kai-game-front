@@ -115,15 +115,15 @@ async function searchFlipCoinRounds(isRefreshAllElement) {
     data.value.flipCoinRoundsLoading = true;
 
     try {
-        const curRoundSize = data.value.flipCoinRounds.length;
         let request;
         let skipResultSize = 0;
         if (isRefreshAllElement) {
             request = {
                 pageNo: 1,
-                pageSize: curRoundSize,
+                pageSize: null, // not assigned, let server return the default size
             };
         } else {
+            const curRoundSize = data.value.flipCoinRounds.length;
             const pageSize = data.value.flipCoinRoundsPageSize;
             const curPage = Math.floor(curRoundSize / pageSize) + 1;
             skipResultSize = curRoundSize % pageSize;
