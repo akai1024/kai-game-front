@@ -57,14 +57,13 @@ import ScrollTrigger from '@/components/ScrollTrigger.vue';
 const props = defineProps({
     loginUser: {
         type: Object,
-        required: true
+        required: false
     },
 });
 
 // 監聽 loginUser 的變化
 watch(() => props.loginUser, (loginUser) => {
     // 當 loginUser 變化時，更新搜索條件並重新搜索
-    console.log('user change');
     searchFlipCoinRounds(true);
 });
 
