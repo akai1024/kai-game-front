@@ -16,7 +16,7 @@
                             Hello! {{ getUserName() }}
                         </v-chip>
                     </template>
-                    <UserInfoPopup v-if="data.loginUser" :onLogoutSuccess="onLogoutSuccess" />
+                    <UserInfoPopup v-if="data.loginUser" :onDepositSuccess="refreshWallet" :onLogoutSuccess="onLogoutSuccess" />
                 </v-menu>
             </v-app-bar>
             <v-main>
