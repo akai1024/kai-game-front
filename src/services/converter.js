@@ -38,4 +38,26 @@ export default {
         return [`${year}-${month}-${day}`, `${hours}:${minutes}`];
     },
 
+    timeAgo(timestamp) {
+        if (!timestamp) {
+            return 'long time ago';
+        }
+
+        const now = Date.now();
+        const diffInSeconds = Math.floor((now - timestamp) / 1000);
+
+        if (diffInSeconds >= 86400) {
+            const days = Math.floor(diffInSeconds / 86400);
+            return `over ${days} days ago`;
+        } else if (diffInSeconds >= 3600) {
+            const hours = Math.floor(diffInSeconds / 3600);
+            return `before ${hours} hours ago`;
+        } else if (diffInSeconds >= 60) {
+            const minutes = Math.floor(diffInSeconds / 60);
+            return `before ${minutes} minutes ago`;
+        } else {
+            return `before ${diffInSeconds} seconds ago`;
+        }
+    }
+
 }

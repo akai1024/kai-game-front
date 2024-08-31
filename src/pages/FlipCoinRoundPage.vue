@@ -1,5 +1,5 @@
 <template>
-    <v-card width="600">
+    <v-card max-width="600">
         <v-card-title class="d-flex align-center">
             <v-icon>mdi-alpha-c-circle</v-icon>
             <span class="mx-5">Flip Coin</span>
@@ -8,31 +8,34 @@
         </v-card-title>
 
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
-            <v-list density="compact">
+            <v-list density="compact" width="400" class="pa-0">
                 <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
                     class="d-flex justify-center">
-                    <v-card class="my-1" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
+                    <v-card class="my-1" width="400" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
                         <v-card-title>
-                            <v-chip>
+                            <v-chip variant="outlined">
                                 <h2>{{ round.roundNumber }}</h2>
                             </v-chip>
-                            <v-badge v-if="round.participant" color="yellow-darken-4"
-                                :content="getJoinedMarkContent(round)" inline class="flip-scale-up-ver ml-3">
-                                <span></span>
-                            </v-badge>
+                            <v-chip v-if="round.participant" variant="elevated" color="yellow-darken-4"
+                                class="flip-scale-up-ver ml-3 opacity-90">
+                                {{ getJoinedMarkContent(round) }}
+                            </v-chip>
                         </v-card-title>
                         <v-card-subtitle>
                             <span class="mr-3">Participants: {{ `${round.participants} /
                                 ${round.participantLimit}` }}</span>
-                            <v-spacer></v-spacer>
                             <span v-if="round.settleTime">Settled at {{ getDateText(round.settleTime)
                                 }}</span>
                         </v-card-subtitle>
-                        <v-card class="mt-2" width="400" :disabled="round.ableToSettle || round.settle">
+                        <v-card class="mt-2" :disabled="round.ableToSettle || round.settle">
                             <v-card-text class="bg-surface-light pt-3">
                                 <p>Start Time: {{ getDateText(round.startTime) }}</p>
                                 <p>End Time: {{ getDateText(round.endTime) }}</p>
-                                <h1>Prize Amount: {{ round.prizeAmount }}</h1>
+                                <h1 class="my-2">Prize Amount: {{ round.prizeAmount }}</h1>
+                                <p>
+                                    <v-spacer></v-spacer>
+                                    <v-chip>updated {{ getTimeAgo(round.updateTime) }}</v-chip>
+                                </p>
                             </v-card-text>
                         </v-card>
                     </v-card>
@@ -80,6 +83,10 @@ const data = ref({
 
 function getDateText(timestamp) {
     return converter.transferFromTimestamp(timestamp);
+}
+
+function getTimeAgo(timestamp) {
+    return converter.timeAgo(timestamp);
 }
 
 function getJoinedMarkContent(round) {
