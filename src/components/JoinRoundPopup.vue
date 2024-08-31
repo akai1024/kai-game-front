@@ -40,7 +40,7 @@
                 <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
                 <v-spacer class="my-5"></v-spacer>
                 <div class="d-flex justify-center align-center my-3">
-                    <FlipCoin @flip="handleFlipEvent" />
+                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult"/>
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
                 <v-card class="my-1 d-flex flex-column">
