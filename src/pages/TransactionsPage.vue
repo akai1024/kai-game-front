@@ -8,7 +8,7 @@
         </v-card-title>
 
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
-            <v-list density="compact" class="pa-0">
+            <v-list density="compact" class="pa-0" width="400">
                 <v-list-item v-for="(tx, i) in data.transactions" :key="i" :value="tx" color="primary">
                     <v-card :color="getTxColor(tx)" class="my-1 w-100">
                         <v-card-title>
