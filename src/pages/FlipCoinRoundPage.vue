@@ -101,6 +101,9 @@ function getRoundColor(round) {
 }
 
 async function scrollTop() {
+    if (data.value.flipCoinRoundsLoading) {
+        return;
+    }
     searchFlipCoinRounds(true);
 }
 
