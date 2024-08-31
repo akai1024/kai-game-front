@@ -11,24 +11,29 @@
             <v-list density="compact" width="400" class="pa-0">
                 <v-list-item v-for="(tx, i) in data.transactions" :key="i" :value="tx" color="primary"
                     class="d-flex justify-center">
-                    <v-card class="my-1" width="400" :color="getTxColor(tx)">
+                    <v-card class="my-1" width="368" :color="getTxColor(tx)">
                         <v-card-title>
-                            <v-chip variant="outlined">
-                                <h2>{{ converter.moneyChangeTypeText(tx.changeType) }}</h2>
-                            </v-chip>
+                            <v-row>
+                                <v-col>
+                                    <v-chip>
+                                        <h2>{{ converter.moneyChangeTypeText(tx.changeType) }}</h2>
+                                    </v-chip>
+                                </v-col>
+                                <v-col class="d-flex flex-row-reverse pa-4">
+                                    <v-chip variant="outlined px-3">
+                                        <h1>{{ getMoneyChangeAmountText(tx) }}</h1>
+                                    </v-chip>
+                                </v-col>
+                            </v-row>
                         </v-card-title>
                         <v-card-subtitle>
                             <p class="mr-3">Trace Id: {{ tx.id }}</p>
-                            <p>Create Time: {{ getDateText(tx.createTime) }}</p>
                         </v-card-subtitle>
                         <v-card class="mt-2">
                             <v-card-text class="bg-surface-light pt-3">
+                                <p>Change Time: {{ getDateText(tx.createTime) }}</p>
                                 <p>Before Balance: {{ tx.beforeBalance }}</p>
-                                <p>After Balance: {{ tx.beforeBalance }}</p>
-                                <p>
-                                    <v-spacer></v-spacer>
-                                    <v-chip>Change Amount: {{ tx.changeAmount }}</v-chip>
-                                </p>
+                                <p>After Balance: {{ tx.afterBalance }}</p>
                             </v-card-text>
                         </v-card>
                     </v-card>
@@ -39,10 +44,10 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from 'vue';
+import ScrollTrigger from '@/components/ScrollTrigger.vue';
 import api from '@/services/api';
 import converter from '@/services/converter';
-import ScrollTrigger from '@/components/ScrollTrigger.vue';
+import { defineProps, ref, watch } from 'vue';
 
 const props = defineProps({
     loginUser: {
@@ -80,6 +85,11 @@ function getDateText(timestamp) {
 
 function getTxColor(tx) {
     return tx.add ? 'green' : 'red';
+}
+
+function getMoneyChangeAmountText(tx) {
+    const prefix = tx.add ? '+' : '-';
+    return `${prefix} ${tx.changeAmount}`;
 }
 
 async function scrollTop() {
