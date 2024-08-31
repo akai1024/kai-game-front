@@ -88,9 +88,14 @@ async function onMainBtnClick() {
                 onMainBtnClick();
             } else {
                 const token = result ? result.token : null;
-                const tokenExpiredTime = result ? result.expiredTime : null;
                 if (token) {
-                    localStorage.setItem('localStorageUser', JSON.stringify({ account: inputAccount, loginToken: token, loginTokenExpiredTime: tokenExpiredTime }));
+                    localStorage.setItem('localStorageUser', JSON.stringify(
+                        { 
+                            account: inputAccount, 
+                            userId: result.userId,
+                            loginToken: token, 
+                            loginTokenExpiredTime: result.expiredTime,
+                         }));
                 }
             }
 

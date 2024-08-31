@@ -58,6 +58,19 @@ export default {
         } else {
             return `before ${diffInSeconds} seconds ago`;
         }
-    }
+    },
 
+    moneyChangeTypeText(changeType) {
+        const map = new Map();
+        map.set('ADD_ADMIN','Add by Admin');
+        map.set('ADD_DEPOSIT','Deposit');
+        map.set('ADD_WINNING','Winning');
+
+        map.set('SUB_ADMIN','Deduct by Admin');
+        map.set('SUB_BET','Bet');
+        map.set('SUB_WITHDRAW','Withdraw');
+
+        return map.get(changeType);
+    },
+    
 }

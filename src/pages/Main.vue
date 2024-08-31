@@ -2,14 +2,22 @@
     <v-app>
         <v-layout>
             <v-app-bar>
-                <v-app-bar-nav-icon>
+                <v-app-bar-nav-icon @click="switchMainPageContentToGamePage">
                     <v-icon icon="mdi-nintendo-game-boy" class="pa-3"></v-icon>
                 </v-app-bar-nav-icon>
                 <v-toolbar-title>Kai Games</v-toolbar-title>
                 <v-chip v-if="data.loginUser" class="mr-1" prepend-icon="mdi-gold" @click="refreshWallet">
                     {{ getWalletBalance() }}
                 </v-chip>
+
                 <v-menu transition="slide-y-transition">
+                    <v-card>
+                        <v-tabs v-model="data.mainPageContent" color="primary" direction="vertical">
+                            <v-tab prepend-icon="mdi-nintendo-game-boy" text="Games" value="GamePage"></v-tab>
+                            <v-tab prepend-icon="mdi-wallet" text="Transactions" value="TransactionsPage"></v-tab>
+                        </v-tabs>
+                    </v-card>
+
                     <template v-slot:activator="{ props }">
                         <v-chip v-bind="props" class="mr-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
                             :disabled="data.flipCoinRoundsLoading">
@@ -20,9 +28,17 @@
                         :onLogoutSuccess="onLogoutSuccess" />
                 </v-menu>
             </v-app-bar>
+
             <v-main>
                 <v-container class="d-flex justify-center" style="max-width: 800px;">
-                    <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" />
+                    <v-tabs-window v-model="data.mainPageContent">
+                        <v-tabs-window-item value="GamePage">
+                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" />
+                        </v-tabs-window-item>
+                        <v-tabs-window-item value="TransactionsPage">
+                            <component :is="TransactionsPage" :loginUser="data.loginUser" :onLoginUserChange="switchMainPageContentToGamePage"/>
+                        </v-tabs-window-item>
+                    </v-tabs-window>
                 </v-container>
             </v-main>
         </v-layout>
@@ -51,10 +67,15 @@ const data = ref({
 
     userWallet: null,
 
+    mainPageContent: 'GamePage',
+
 });
 
 onLoginSuccess();
 
+function switchMainPageContentToGamePage() {
+    data.value.mainPageContent = 'GamePage';
+}
 
 async function refreshAll() {
     refreshWallet();

@@ -1,10 +1,9 @@
 <template>
-    <v-container width="300" height="200" class="pa-0 ma-1">
+    <v-container width="300" height="200" class="pa-0 ma-0">
         <v-card>
             <v-card-title></v-card-title>
             <v-card-text></v-card-text>
             <v-btn prepend-icon="mdi-account-cash" color="grey" class="mx-auto my-1 d-flex" height="50" @click="onDepositClick">Deposit</v-btn>
-            <v-btn prepend-icon="mdi-wallet" color="grey" class="mx-auto my-1 d-flex">Transactions</v-btn>
             <v-divider class="mt-5"></v-divider>
             <v-card-actions>
                 <v-btn prepend-icon="mdi-logout" color="grey" @click="logout" block>Logout</v-btn>

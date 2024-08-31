@@ -9,17 +9,17 @@
 
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
             <v-list density="compact" width="400" class="pa-0">
-                <v-list-item v-for="(round, i) in data.transactions" :key="i" :value="tx" color="primary"
+                <v-list-item v-for="(tx, i) in data.transactions" :key="i" :value="tx" color="primary"
                     class="d-flex justify-center">
                     <v-card class="my-1" width="400" :color="getTxColor(tx)">
                         <v-card-title>
                             <v-chip variant="outlined">
-                                <h2>{{ tx.changeType }}</h2>
+                                <h2>{{ converter.moneyChangeTypeText(tx.changeType) }}</h2>
                             </v-chip>
                         </v-card-title>
                         <v-card-subtitle>
-                            <span class="mr-3">Trace Id: {{ tx.traceId }}</span>
-                            <span>Create Time: {{ getDateText(tx.createTime)}}</span>
+                            <p class="mr-3">Trace Id: {{ tx.id }}</p>
+                            <p>Create Time: {{ getDateText(tx.createTime) }}</p>
                         </v-card-subtitle>
                         <v-card class="mt-2">
                             <v-card-text class="bg-surface-light pt-3">
@@ -49,21 +49,30 @@ const props = defineProps({
         type: Object,
         required: false
     },
+
+    onLoginUserChange: {
+        type: Function,
+        required: false
+    },
 });
 
 // 監聽 loginUser 的變化
 watch(() => props.loginUser, (loginUser) => {
     // 當 loginUser 變化時，跳回首頁
-   
+    if (props.onLoginUserChange) {
+        props.onLoginUserChange();
+    }
 });
 
 const data = ref({
     loading: true,
-    itemsPerPage: 20,
+    itemsPerPage: 0,
     page: 1,
     totalItems: 0,
     transactions: [],
 });
+
+searchTransactions(true);
 
 function getDateText(timestamp) {
     return converter.transferFromTimestamp(timestamp);
@@ -96,11 +105,11 @@ async function searchTransactions(isRefreshTop) {
         if (isRefreshTop) {
             request = {
                 pageNo: 1,
-                pageSize: null, // not assigned, let server return the default size
+                pageSize: data.value.itemsPerPage,
             };
         } else {
-            const curRoundSize = data.value.flipCoinRounds.length;
-            const pageSize = data.value.flipCoinRoundsPageSize;
+            const curRoundSize = data.value.transactions.length;
+            const pageSize = data.value.itemsPerPage;
             const curPage = Math.floor(curRoundSize / pageSize) + 1;
             skipResultSize = curRoundSize % pageSize;
             request = {
@@ -108,6 +117,8 @@ async function searchTransactions(isRefreshTop) {
                 pageSize: pageSize,
             };
         }
+
+        request.userId = props.loginUser.userId;
 
         const result = await api.post('/user/money/findMoneyChange', request);
         if (result) {
