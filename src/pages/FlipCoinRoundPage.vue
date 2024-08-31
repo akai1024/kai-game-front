@@ -1,11 +1,12 @@
 <template>
     <v-card width="600">
-        <v-card-title>
+        <v-card-title class="d-flex align-center">
             <v-icon>mdi-alpha-c-circle</v-icon>
-            <v-badge class="my-1" :content="`Total Rounds: ${data.flipCoinRoundsTotal}`">
-                <span class="mx-5">Flip Coin</span>
-            </v-badge>
+            <span class="mx-5">Flip Coin</span>
+            <v-spacer></v-spacer>
+            <v-chip>{{ `Total Rounds: ${data.flipCoinRoundsTotal}` }}</v-chip>
         </v-card-title>
+
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
             <v-list density="compact">
                 <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary"
