@@ -3,10 +3,10 @@
         <v-card>
             <v-card-title></v-card-title>
             <v-card-text></v-card-text>
-            <v-btn color="grey" class="mx-auto my-1 d-flex">Money Change History</v-btn>
+            <v-btn prepend-icon="mdi-wallet" color="grey" class="mx-auto my-1 d-flex">Money Change History</v-btn>
             <v-divider class="mt-5"></v-divider>
             <v-card-actions>
-                <v-btn color="grey" @click="logout" block>Logout</v-btn>
+                <v-btn prepend-icon="mdi-logout" color="grey" @click="logout" block>Logout</v-btn>
             </v-card-actions>
         </v-card>
     </v-container>
