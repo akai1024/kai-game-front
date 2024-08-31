@@ -10,7 +10,7 @@
                     {{ getWalletBalance() }}
                 </v-chip>
 
-                <v-menu transition="slide-y-transition">
+                <v-menu transition="slide-y-transition" :disabled="!data.loginUser">
                     <v-card>
                         <v-tabs v-model="data.mainPageContent" color="primary" direction="vertical">
                             <v-tab prepend-icon="mdi-nintendo-game-boy" text="Games" value="GamePage"></v-tab>
@@ -33,7 +33,7 @@
                 <v-container class="d-flex justify-center" style="max-width: 800px;">
                     <v-tabs-window v-model="data.mainPageContent">
                         <v-tabs-window-item value="GamePage">
-                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" />
+                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" :onBetSuccess="refreshWallet"/>
                         </v-tabs-window-item>
                         <v-tabs-window-item value="TransactionsPage">
                             <component :is="TransactionsPage" :loginUser="data.loginUser" :onLoginUserChange="switchMainPageContentToGamePage"/>

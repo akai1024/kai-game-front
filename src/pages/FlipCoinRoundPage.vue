@@ -42,7 +42,7 @@
 
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :onJoinSuccess="onJoinRoundSuccess" />
+            <JoinRoundPopup :round="data.joinRound" :loginUser="props.loginUser" :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
 </template>
@@ -60,6 +60,10 @@ const props = defineProps({
     loginUser: {
         type: Object,
         required: false
+    },
+    onBetSuccess: {
+        type: Function,
+        required: false,
     },
 });
 
@@ -171,6 +175,10 @@ function onJoinRoundClick(round) {
 function onJoinRoundSuccess() {
     data.value.joinRoundPopup = false;
     searchFlipCoinRounds(true);
+
+    if (props.onBetSuccess) {
+        props.onBetSuccess();
+    }
 }
 
 </script>

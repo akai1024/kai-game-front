@@ -18,7 +18,7 @@
                         {{ getFlipContent(props.round.participant.flip) }}
                     </v-card-title>
                     <div class="d-flex justify-center align-center my-3">
-                        <FlipCoin :isDisabled="true" :initialSide="props.round.participant.betResult"/>
+                        <FlipCoin :isDisabled="true" :initialSide="props.round.participant.betResult" />
                     </div>
                     <v-card-text class="d-flex justify-center align-center">
                         and paid ${{ props.round.participant.betAmount }} to bet the result will be
@@ -40,7 +40,7 @@
                 <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
                 <v-spacer class="my-5"></v-spacer>
                 <div class="d-flex justify-center align-center my-3">
-                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult"/>
+                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
                 <v-card class="my-1 d-flex flex-column">
@@ -68,6 +68,10 @@ const props = defineProps({
     round: {
         type: Object,
         required: true
+    },
+    loginUser: {
+        type: Object,
+        required: false
     },
     onJoinSuccess: {
         type: Function,
@@ -101,7 +105,9 @@ function getJoinBtnText() {
 }
 
 function joinRoundBtnDisabled() {
-    return props.round.participants >= props.round.participantLimit || !data.value.joinRoundParam.betAmount;
+    return !props.loginUser ||
+        props.round.participants >= props.round.participantLimit ||
+        !data.value.joinRoundParam.betAmount;
 }
 
 async function joinRound() {
