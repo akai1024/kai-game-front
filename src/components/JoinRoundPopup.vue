@@ -45,7 +45,7 @@
                 </div>
                 <v-card class="my-1 d-flex flex-column">
                     <v-switch v-model="data.joinRoundParam.flip"
-                        :label="data.joinRoundParam.flip ? 'You decide to flip once' : 'You decide to not to touch it'"
+                        :label="getFlipContent(data.joinRoundParam.flip)"
                         hide-details inset class="ma-auto d-flex flex-column"></v-switch>
                     <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
                         label="Bet Amount" clearable></v-text-field>

@@ -25,6 +25,9 @@
                     <!-- 嵌入的 WebP 圖像 -->
                     <image x="-45" y="-33" width="290" height="290" href="/flipcoin_back.webp"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
+                    <!-- Value text -->
+                    <text x="100" y="150" font-size="20" text-anchor="middle" fill="#E0E0E0"
+                        font-family="Arial, sans-serif">This is Back</text>
                 </svg>
             </div>
         </div>
