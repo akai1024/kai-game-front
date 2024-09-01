@@ -84,7 +84,7 @@ const data = ref({
     joinRoundParam: {
         flip: false,
         betAmount: null,
-        betFlipResult: false,
+        betFlipResult: true,
     },
 });
 

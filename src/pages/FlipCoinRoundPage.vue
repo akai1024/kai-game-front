@@ -28,7 +28,7 @@
                             <v-card-text class="bg-surface-light pa-3">
                                 <p class="mb-1">Start Time: {{ getDateText(round.startTime) }}</p>
                                 <p class="mb-1">End Time: {{ getDateText(round.endTime) }}</p>
-                                <h3 class="my-2">Prize Amount: {{ round.prizeAmount }}</h3>
+                                <h3 class="my-2">Total Prize Amount: {{ round.prizeAmount }}</h3>
                                 <div class="d-flex justify-end mt-2">
                                     <v-chip size="small">updated {{ getTimeAgo(round.updateTime) }}</v-chip>
                                 </div>
