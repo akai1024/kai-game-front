@@ -4,7 +4,7 @@
             <v-icon size="28" class="pa-5 mr-2">mdi-alpha-c-circle</v-icon>
             <span class="text-h6">Flip Coin</span>
             <v-spacer></v-spacer>
-            <v-chip class="pa-5">{{ `Total Rounds: ${data.flipCoinRoundsTotal}` }}</v-chip>
+            <v-chip class="pa-5" @click="scrollTop">{{ `Total Rounds: ${data.flipCoinRoundsTotal}` }}</v-chip>
         </v-card-title>
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
             <v-list density="compact" class="pa-0" width="400">
