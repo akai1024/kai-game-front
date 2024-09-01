@@ -8,11 +8,11 @@
                             <circle cx="100" cy="100" r="80" />
                         </clipPath>
                     </defs>
-                    <image x="15" y="15" width="170" height="170" href="/coin_front_1.jpeg"
+                    <image x="18" y="18" width="164" height="164" href="/coin_front_1.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
                     <!-- <image x="10" y="10" width="180" height="180" href="/coin_front_2.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
-                    <circle cx="100" cy="100" r="80" fill="yellow" opacity="0.08" />
+                    <circle cx="100" cy="100" r="80" fill="yellow" opacity="0.09" />
                 </svg>
             </div>
             <div class="coin-back">
@@ -35,7 +35,7 @@
                     <image x="17" y="17" width="165" height="165" href="/coin_back_6.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
 
-                    <circle cx="100" cy="100" r="80" fill="grey" opacity="0.2" />
+                    <circle cx="100" cy="100" r="80" fill="grey" opacity="0.14" />
                 </svg>
             </div>
         </div>
