@@ -1,5 +1,5 @@
 <template>
-    <v-card max-width="600" class="mx-auto">
+    <v-card class="mx-auto">
         <v-card-title class="d-flex align-center pa-4">
             <v-icon size="28" class="pa-5 mr-2">mdi-alpha-c-circle</v-icon>
             <span class="text-h6">Flip Coin</span>
@@ -40,7 +40,7 @@
         </ScrollTrigger>
     </v-card>
 
-    <v-dialog v-model="data.roundPopup">
+    <v-dialog v-model="data.roundPopup" width="380">
         <template v-slot:default="">
             <FlipCoinRoundPopup :round="data.round" :loginUser="props.loginUser" :userWallet="props.userWallet"
                 :onJoinSuccess="onJoinRoundSuccess" />

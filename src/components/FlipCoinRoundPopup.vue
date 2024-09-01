@@ -1,5 +1,5 @@
 <template>
-    <v-container class="pa-0 mx-auto" width="380">
+    <v-container class="pa-0 mx-auto">
         <v-card v-if="props.round">
             <v-container v-if="props.round.participant">
                 <v-card-title class="d-flex justify-center align-center">
