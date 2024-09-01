@@ -32,7 +32,7 @@
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
                     <!-- <image x="3" y="4" width="194" height="194" href="/coin_back_5.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
-                    <image x="17" y="17" width="165" height="165" href="/coin_back_6.jpeg"
+                    <image x="17" y="19" width="164" height="164" href="/coin_back_6.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
 
                     <circle cx="100" cy="100" r="80" fill="grey" opacity="0.14" />
