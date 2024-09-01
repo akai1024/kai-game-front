@@ -101,7 +101,7 @@ const props = defineProps({
 const data = ref({
     joinRoundParam: {
         flipCount: 0,
-        betAmount: null,
+        betAmount: 0,
         betFlipResult: true,
     },
 });
