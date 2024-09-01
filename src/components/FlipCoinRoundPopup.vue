@@ -38,15 +38,21 @@
                     Current Total Prize Amount:
                 </v-card-text>
                 <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
-                <v-spacer class="my-5"></v-spacer>
                 <v-checkbox v-model="data.joinRoundParam.flip" :label="getFlipContent(data.joinRoundParam.flip, false)"
                     class="ma-auto d-flex flex-column" hide-details></v-checkbox>
                 <div class="d-flex justify-center align-center">
                     <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
-                <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
-                    label="Bet Amount" clearable></v-text-field>
+                <v-row class="my-1 d-flex align-center">
+                    <v-col cols="8" class="pa-4">
+                        <v-text-field v-model="data.joinRoundParam.betAmount" label="Bet Amount" clearable
+                            hide-details></v-text-field>
+                    </v-col>
+                    <v-col cols="4" class="pa-1">
+                        <v-btn color="red" @click="clickMaxBet" height="50">Max Bet</v-btn>
+                    </v-col>
+                </v-row>
                 <v-btn color="green" @click="joinRound" block height="100" :disabled="joinRoundBtnDisabled()">
                     {{ getJoinBtnText() }}
                 </v-btn>
@@ -121,6 +127,15 @@ function joinRoundBtnDisabled() {
         !isSufficientBalance() ||
         props.round.participants >= props.round.participantLimit ||
         !data.value.joinRoundParam.betAmount;
+}
+
+function clickMaxBet() {
+    if (props.userWallet) {
+        const balance = Number(props.userWallet.balance);
+        if (balance > 0) {
+            data.value.joinRoundParam.betAmount = balance;
+        }
+    }
 }
 
 async function joinRound() {
