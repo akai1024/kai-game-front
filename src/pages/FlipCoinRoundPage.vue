@@ -22,7 +22,8 @@
                         <v-card-subtitle class="py-1">
                             <p class="mr-3">Participants: {{ `${round.participants} / ${round.participantLimit}`
                                 }}</p>
-                            <p v-if="round.settleTime">Settled at {{ getDateText(round.settleTime) }}</p>
+                            <p v-if="round.settled">Settled at {{ getDateText(round.settleTime) }}</p>
+                            <p v-if="round.settled">Total flip count: {{ round.flipCount }}</p>
                         </v-card-subtitle>
                         <v-card class="mt-2" :disabled="round.ableToSettle || round.settle">
                             <v-card-text class="bg-surface-light pa-3">
