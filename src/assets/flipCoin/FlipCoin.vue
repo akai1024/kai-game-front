@@ -8,11 +8,11 @@
                             <circle cx="100" cy="100" r="80" />
                         </clipPath>
                     </defs>
-                    <!-- 嵌入的 WebP 圖像 -->
-                    <!-- <image width="200" height="200" href="/flipcoin_front.webp" preserveAspectRatio="xMidYMid slice"
-                        clip-path="url(#circleClip)" /> -->
-                    <image x="-45" y="-33" width="290" height="290" href="/flipcoin_back.webp"
+                    <image x="15" y="15" width="170" height="170" href="/coin_front_1.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
+                    <!-- <image x="10" y="10" width="180" height="180" href="/coin_front_2.jpeg"
+                        preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
+                    <circle cx="100" cy="100" r="80" fill="yellow" opacity="0.08" />
                 </svg>
             </div>
             <div class="coin-back">
@@ -22,12 +22,20 @@
                             <circle cx="100" cy="100" r="80" />
                         </clipPath>
                     </defs>
-                    <!-- 嵌入的 WebP 圖像 -->
-                    <image x="-45" y="-33" width="290" height="290" href="/flipcoin_back.webp"
+                    <!-- <image x="10" y="10" width="180" height="180" href="/coin_back_1.jpeg"
+                        preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
+                    <!-- <image x="0" y="0" width="200" height="200" href="/coin_back_2.jpeg"
+                        preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
+                    <!-- <image width="200" height="200" href="/coin_back_3.jpeg" preserveAspectRatio="xMidYMid slice"
+                        clip-path="url(#circleClip)" /> -->
+                    <!-- <image x="13" y="13" width="172" height="172" href="/coin_back_4.jpeg"
+                        preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
+                    <!-- <image x="3" y="4" width="194" height="194" href="/coin_back_5.jpeg"
+                        preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
+                    <image x="17" y="17" width="165" height="165" href="/coin_back_6.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
-                    <!-- Value text -->
-                    <text x="100" y="150" font-size="20" text-anchor="middle" fill="#E0E0E0"
-                        font-family="Arial, sans-serif">This is Back</text>
+
+                    <circle cx="100" cy="100" r="80" fill="grey" opacity="0.2" />
                 </svg>
             </div>
         </div>
