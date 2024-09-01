@@ -26,7 +26,7 @@
                     </v-card-text>
                     <v-card-text v-if="props.round.settled && props.round.participant.winAmount > 0"
                         class="d-flex justify-center align-center">
-                        <h1>and WIN {{ props.round.participant.winAmount }} !!!</h1>
+                        <h1>and WIN ${{ props.round.participant.winAmount }} !!!</h1>
                     </v-card-text>
                 </v-card>
             </v-container>
