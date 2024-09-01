@@ -30,7 +30,7 @@
                     </v-card-text>
                 </v-card>
             </v-container>
-            <v-container v-else>
+            <v-container v-else class="d-flex flex-column">
                 <v-card-title class="d-flex justify-center align-center">
                     Do you want to join {{ props.round.roundNumber }} !?
                 </v-card-title>
@@ -39,17 +39,14 @@
                 </v-card-text>
                 <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
                 <v-spacer class="my-5"></v-spacer>
+                <v-switch v-model="data.joinRoundParam.flip" :label="getFlipContent(data.joinRoundParam.flip)"
+                    hide-details inset class="ma-auto d-flex flex-column"></v-switch>
                 <div class="d-flex justify-center align-center my-3">
                     <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
-                <v-card class="my-1 d-flex flex-column">
-                    <v-switch v-model="data.joinRoundParam.flip"
-                        :label="getFlipContent(data.joinRoundParam.flip)"
-                        hide-details inset class="ma-auto d-flex flex-column"></v-switch>
-                    <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
-                        label="Bet Amount" clearable></v-text-field>
-                </v-card>
+                <v-text-field class="ma-auto d-flex flex-column" width="200" v-model="data.joinRoundParam.betAmount"
+                    label="Bet Amount" clearable></v-text-field>
                 <v-btn color="green" @click="joinRound" block height="100" :disabled="joinRoundBtnDisabled()">
                     {{ getJoinBtnText() }}
                 </v-btn>
