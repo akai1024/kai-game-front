@@ -42,7 +42,7 @@
 
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :loginUser="props.loginUser" :onJoinSuccess="onJoinRoundSuccess" />
+            <JoinRoundPopup :round="data.joinRound" :loginUser="props.loginUser" :userWallet="props.userWallet" :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
 </template>
@@ -58,6 +58,10 @@ import ScrollTrigger from '@/components/ScrollTrigger.vue';
 
 const props = defineProps({
     loginUser: {
+        type: Object,
+        required: false
+    },
+    userWallet: {
         type: Object,
         required: false
     },

@@ -57,7 +57,7 @@
 
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps } from 'vue';
 import api from '@/services/api';
 import FlipCoin from '@/assets/flipCoin/FlipCoin.vue';
 
@@ -67,6 +67,10 @@ const props = defineProps({
         required: true
     },
     loginUser: {
+        type: Object,
+        required: false
+    },
+    userWallet: {
         type: Object,
         required: false
     },
@@ -97,12 +101,19 @@ function getFlipContent(flip) {
 }
 
 function getJoinBtnText() {
-    return props.round.participants >= props.round.participantLimit ?
-        'This round is full' : 'Join Round';
+    return data.value.joinRoundParam.betAmount && !isSufficientBalance() ? 'Insufficient Balance'
+        :
+        props.round.participants >= props.round.participantLimit ?
+            'This round is full' : 'Join Round';
+}
+
+function isSufficientBalance() {
+    return props.userWallet && Number(props.userWallet.balance) >= Number(data.value.joinRoundParam.betAmount);
 }
 
 function joinRoundBtnDisabled() {
     return !props.loginUser ||
+        !isSufficientBalance() ||
         props.round.participants >= props.round.participantLimit ||
         !data.value.joinRoundParam.betAmount;
 }

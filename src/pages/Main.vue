@@ -33,7 +33,7 @@
                 <v-container class="d-flex justify-center" style="max-width: 800px;">
                     <v-tabs-window v-model="data.mainPageContent">
                         <v-tabs-window-item value="GamePage">
-                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" :onBetSuccess="refreshWallet"/>
+                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" :userWallet="data.userWallet" :onBetSuccess="refreshWallet"/>
                         </v-tabs-window-item>
                         <v-tabs-window-item value="TransactionsPage">
                             <component :is="TransactionsPage" :loginUser="data.loginUser" :onLoginUserChange="switchMainPageContentToGamePage"/>
@@ -64,11 +64,8 @@ import TransactionsPage from './TransactionsPage.vue';
 const data = ref({
     loginPopup: false,
     loginUser: null,
-
     userWallet: null,
-
     mainPageContent: 'GamePage',
-
 });
 
 onLoginSuccess();
