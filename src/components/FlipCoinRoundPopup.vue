@@ -37,11 +37,11 @@
                 <v-card-text class="d-flex justify-center align-center">
                     Current Total Prize Amount:
                 </v-card-text>
-                <h1 class="d-flex justify-center align-center my-3">{{ props.round.prizeAmount }}</h1>
+                <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
                 <v-spacer class="my-5"></v-spacer>
-                <v-switch v-model="data.joinRoundParam.flip" :label="getFlipContent(data.joinRoundParam.flip, false)"
-                    hide-details inset class="ma-auto d-flex flex-column"></v-switch>
-                <div class="d-flex justify-center align-center my-3">
+                <v-checkbox v-model="data.joinRoundParam.flip" :label="getFlipContent(data.joinRoundParam.flip, false)"
+                    class="ma-auto d-flex flex-column" hide-details></v-checkbox>
+                <div class="d-flex justify-center align-center">
                     <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
@@ -99,9 +99,9 @@ function getFlipResult(result) {
 
 function getFlipContent(flip, isParticipantDetail) {
     if (isParticipantDetail) {
-        return flip ? 'You decided to flip once!' : 'You decided to not to touch it';
+        return flip ? 'You decided to flip once !' : 'You decided to not to touch it';
     } else {
-        return flip ? 'Flip once in this round!' : 'Just leave it as it is';
+        return flip ? 'Flip once in this round !' : 'Just leave it as it is';
     }
 }
 
