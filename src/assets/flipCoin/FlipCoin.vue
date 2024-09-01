@@ -93,7 +93,11 @@ export default {
             }
 
             // Determine the number of rotations needed
-            const rotationsNeeded = newIsFlipping === this.isFlipping ? 4 : 3;
+            let rotationsNeeded = newIsFlipping === this.isFlipping ? 2 : 1;
+            // Add 2 rotations when it is random to make it more insteresting
+            if (this.isRandomFlip) {
+                rotationsNeeded += 2;
+            }
             this.rotations += rotationsNeeded;
 
             // Update isFlipping after a short delay to allow the animation to start
