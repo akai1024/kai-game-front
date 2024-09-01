@@ -40,9 +40,9 @@
         </ScrollTrigger>
     </v-card>
 
-    <v-dialog v-model="data.joinRoundPopup">
+    <v-dialog v-model="data.roundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :loginUser="props.loginUser" :userWallet="props.userWallet"
+            <FlipCoinRoundPopup :round="data.round" :loginUser="props.loginUser" :userWallet="props.userWallet"
                 :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
@@ -54,7 +54,7 @@
 import { ref, defineProps, watch } from 'vue';
 import api from '@/services/api';
 import converter from '@/services/converter';
-import JoinRoundPopup from '@/components/JoinRoundPopup.vue';
+import FlipCoinRoundPopup from '@/components/FlipCoinRoundPopup.vue';
 import ScrollTrigger from '@/components/ScrollTrigger.vue';
 
 const props = defineProps({
@@ -84,8 +84,8 @@ const data = ref({
     flipCoinRoundsTotal: 0,
     flipCoinRounds: [],
 
-    joinRound: null,
-    joinRoundPopup: false,
+    round: null,
+    roundPopup: false,
 });
 
 function getDateText(timestamp) {
@@ -177,13 +177,13 @@ async function searchFlipCoinRounds(isRefreshTop) {
 
 function onJoinRoundClick(round) {
     if (round.opening || round.participant) {
-        data.value.joinRound = round;
-        data.value.joinRoundPopup = true;
+        data.value.round = round;
+        data.value.roundPopup = true;
     }
 }
 
 function onJoinRoundSuccess() {
-    data.value.joinRoundPopup = false;
+    data.value.roundPopup = false;
     searchFlipCoinRounds(true);
 
     if (props.onBetSuccess) {
