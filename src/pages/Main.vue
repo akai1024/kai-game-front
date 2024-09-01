@@ -3,10 +3,10 @@
         <v-layout>
             <v-app-bar>
                 <v-app-bar-nav-icon @click="switchMainPageContentToGamePage">
-                    <v-icon icon="mdi-nintendo-game-boy" class="pa-3"></v-icon>
+                    <v-icon icon="mdi-nintendo-game-boy" class="pa-5"></v-icon>
                 </v-app-bar-nav-icon>
                 <v-toolbar-title>Kai Games</v-toolbar-title>
-                <v-chip v-if="data.loginUser" class="mr-1" prepend-icon="mdi-gold" @click="refreshWallet">
+                <v-chip v-if="data.loginUser" class="pa-4 mr-1" prepend-icon="mdi-gold" @click="refreshWallet">
                     {{ getWalletBalance() }}
                 </v-chip>
 
@@ -14,12 +14,12 @@
                     <v-card>
                         <v-tabs v-model="data.mainPageContent" color="primary" direction="vertical">
                             <v-tab prepend-icon="mdi-nintendo-game-boy" text="Games" value="GamePage"></v-tab>
-                            <v-tab prepend-icon="mdi-wallet" text="Transactions" value="TransactionsPage"></v-tab>
+                            <v-tab prepend-icon="mdi-wallet" text="Balance Records" value="TransactionsPage"></v-tab>
                         </v-tabs>
                     </v-card>
 
                     <template v-slot:activator="{ props }">
-                        <v-chip v-bind="props" class="mr-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
+                        <v-chip v-bind="props" class="pa-4 mr-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
                             :disabled="data.flipCoinRoundsLoading">
                             Hello! {{ getUserName() }}
                         </v-chip>

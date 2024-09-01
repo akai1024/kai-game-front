@@ -1,10 +1,10 @@
 <template>
     <v-card max-width="600" class="mx-auto">
         <v-card-title class="d-flex align-center">
-            <v-icon>mdi-wallet</v-icon>
+            <v-icon class="pa-5">mdi-wallet</v-icon>
             <span class="mx-5">Transactions</span>
             <v-spacer></v-spacer>
-            <v-chip>{{ `Total Records: ${data.totalItems}` }}</v-chip>
+            <v-chip class="pa-5">{{ `Total Records: ${data.totalItems}` }}</v-chip>
         </v-card-title>
 
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
@@ -14,13 +14,13 @@
                         <v-card-title>
                             <v-row no-gutters align="center">
                                 <v-col cols="auto">
-                                    <v-chip>
+                                    <v-chip class="pa-5">
                                         <h3>{{ converter.moneyChangeTypeText(tx.changeType) }}</h3>
                                     </v-chip>
                                 </v-col>
                                 <v-spacer></v-spacer>
                                 <v-col cols="auto">
-                                    <v-chip variant="outlined" class="px-3">
+                                    <v-chip variant="outlined" class="pa-5">
                                         <h3>{{ getMoneyChangeAmountText(tx) }}</h3>
                                     </v-chip>
                                 </v-col>
