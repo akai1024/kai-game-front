@@ -53,7 +53,11 @@ export default {
         initialSide: {
             type: Boolean,
             default: true // true for showing the front side initially, false for the back side
-        }
+        },
+        randomFlip: {
+            type: Boolean,
+            default: false
+        },      
     },
     data() {
         return {
@@ -74,7 +78,11 @@ export default {
                 return;
             }
 
-            this.isFlipping = !this.isFlipping;
+            this.isFlipping = this.randomFlip ?
+                Math.random() < 0.5 // Math.random() returns value between 0 and 1
+                :
+                !this.isFlipping;
+
             this.$emit('flip', this.isFlipping); // emit event and deliver isFlipping value
         },
     },

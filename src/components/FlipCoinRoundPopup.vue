@@ -11,11 +11,11 @@
                 <v-card-text class="d-flex justify-center align-center">
                     Current Total Prize Amount:
                 </v-card-text>
-                <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
+                <h1 class="d-flex justify-center align-center">$ {{ props.round.prizeAmount }}</h1>
                 <v-spacer class="my-5"></v-spacer>
                 <v-card color="secondary" class="my-1">
                     <v-card-title class="d-flex justify-center align-center">
-                        {{ getFlipContent(props.round.participant.flip, true) }}
+                        {{ getFlipCountContent(props.round.participant.flipCount, true) }}
                     </v-card-title>
                     <div class="d-flex justify-center align-center my-3">
                         <FlipCoin :isDisabled="true" :initialSide="props.round.participant.betResult" />
@@ -37,23 +37,34 @@
                 <v-card-text class="d-flex justify-center align-center">
                     Current Total Prize Amount:
                 </v-card-text>
-                <h1 class="d-flex justify-center align-center">{{ props.round.prizeAmount }}</h1>
-                <v-checkbox v-model="data.joinRoundParam.flip" :label="getFlipContent(data.joinRoundParam.flip, false)"
-                    class="ma-auto d-flex flex-column" hide-details></v-checkbox>
+                <h1 class="d-flex justify-center align-center">$ {{ props.round.prizeAmount }}</h1>
                 <div class="d-flex justify-center align-center">
-                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" />
+                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" :randomFlip="true" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
-                <v-row class="my-1 d-flex align-center">
-                    <v-col cols="8" class="pa-4">
-                        <v-text-field v-model="data.joinRoundParam.betAmount" label="Bet Amount" clearable
-                            hide-details></v-text-field>
-                    </v-col>
-                    <v-col cols="4" class="pa-1">
-                        <v-btn color="red" @click="clickMaxBet" height="50">Max Bet</v-btn>
-                    </v-col>
-                </v-row>
-                <v-btn color="green" @click="joinRound" block height="100" :disabled="joinRoundBtnDisabled()">
+                <v-card-text class="d-flex justify-center align-center">
+                    {{ getFlipCountContent(data.joinRoundParam.flipCount) }}
+                </v-card-text>
+                <v-card>
+                    <v-row class="d-flex align-center">
+                        <v-col cols="8" class="pa-0">
+                            <v-text-field v-model="data.joinRoundParam.flipCount" label="Flip Count" clearable
+                                hide-details type="number"></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-btn color="red" @click="resetFlipCount" height="50" width="100">Clear</v-btn>
+                        </v-col>
+                        <v-col cols="8" class="pa-0">
+                            <v-text-field v-model="data.joinRoundParam.betAmount" label="Bet Amount" clearable
+                                hide-details type="number"></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-btn color="red" @click="clickMaxBet" height="50" width="100">Max Bet</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card>
+                <v-btn class="mt-4" color="green" @click="joinRound" block height="100"
+                    :disabled="joinRoundBtnDisabled()">
                     {{ getJoinBtnText() }}
                 </v-btn>
             </v-container>
@@ -89,7 +100,7 @@ const props = defineProps({
 
 const data = ref({
     joinRoundParam: {
-        flip: false,
+        flipCount: 0,
         betAmount: null,
         betFlipResult: true,
     },
@@ -97,17 +108,20 @@ const data = ref({
 
 function handleFlipEvent(newState) {
     data.value.joinRoundParam.betFlipResult = newState;
+    data.value.joinRoundParam.flipCount++;
 }
 
 function getFlipResult(result) {
     return converter.getFlipCoinResultText(result);
 }
 
-function getFlipContent(flip, isParticipantDetail) {
+function getFlipCountContent(flipCount, isParticipantDetail) {
     if (isParticipantDetail) {
-        return flip ? 'You decided to flip once !' : 'You decided to not to touch it';
+        return flipCount > 0 ? `You decided to flip ${flipCount} !` : 'You decided to not to touch it';
     } else {
-        return flip ? 'Flip once in this round !' : 'Just leave it as it is';
+        return flipCount > 0 ? `You are going to add ${flipCount} count in this round !`
+            :
+            'You just leave it as it is';
     }
 }
 
@@ -126,7 +140,12 @@ function joinRoundBtnDisabled() {
     return !props.loginUser ||
         !isSufficientBalance() ||
         props.round.participants >= props.round.participantLimit ||
+        data.value.joinRoundParam.flipCount == null ||
         !data.value.joinRoundParam.betAmount;
+}
+
+function resetFlipCount() {
+    data.value.joinRoundParam.flipCount = 0;
 }
 
 function clickMaxBet() {
@@ -142,7 +161,7 @@ async function joinRound() {
     try {
         const request = {
             roundNumber: props.round.roundNumber,
-            flip: data.value.joinRoundParam.flip,
+            flipCount: data.value.joinRoundParam.flipCount,
             betFlipResult: data.value.joinRoundParam.betFlipResult,
             betAmount: data.value.joinRoundParam.betAmount,
         };
