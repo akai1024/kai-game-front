@@ -39,7 +39,7 @@
                 </v-card-text>
                 <h1 class="d-flex justify-center align-center">$ {{ props.round.prizeAmount }}</h1>
                 <div class="d-flex justify-center align-center">
-                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" :randomFlip="true" />
+                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" :isRandomFlip="true" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
                 <v-card-text class="d-flex justify-center align-center">
@@ -117,9 +117,9 @@ function getFlipResult(result) {
 
 function getFlipCountContent(flipCount, isParticipantDetail) {
     if (isParticipantDetail) {
-        return flipCount > 0 ? `You decided to flip ${flipCount} !` : 'You decided to not to touch it';
+        return flipCount > 0 ? `You decided to flip ${flipCount} times !` : 'You decided to not to touch it';
     } else {
-        return flipCount > 0 ? `You are going to add ${flipCount} count in this round !`
+        return flipCount > 0 ? `You are going to increase ${flipCount} of total count !`
             :
             'You just leave it as it is';
     }

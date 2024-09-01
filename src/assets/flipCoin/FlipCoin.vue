@@ -1,6 +1,6 @@
 <template>
-    <div class="flip-coin" @click="flipCoin" :class="{ disabled: isDisabled, 'flipping': !isFlipping }">
-        <div class="coin-inner">
+    <div class="flip-coin" @click="flipCoin" :class="{ disabled: isDisabled }">
+        <div class="coin-inner" :style="coinStyle">
             <div class="coin-front">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                     <defs>
@@ -34,7 +34,6 @@
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" /> -->
                     <image x="17" y="19" width="164" height="164" href="/coin_back_6.jpeg"
                         preserveAspectRatio="xMidYMid slice" clip-path="url(#circleClip)" />
-
                     <circle cx="100" cy="100" r="80" fill="grey" opacity="0.14" />
                 </svg>
             </div>
@@ -54,36 +53,56 @@ export default {
             type: Boolean,
             default: true // true for showing the front side initially, false for the back side
         },
-        randomFlip: {
+        isRandomFlip: {
             type: Boolean,
             default: false
-        },      
+        },
     },
     data() {
         return {
-            isFlipping: false
+            isFlipping: false,
+            rotations: 0
+        }
+    },
+    computed: {
+        coinStyle() {
+            return {
+                transform: `rotateY(${this.rotations * 180}deg)`,
+                transition: this.rotations ? 'transform 0.6s' : 'none'
+            }
         }
     },
     mounted() {
         // Set the initial side based on the `initialSide` prop
-        this.flipTo(this.initialSide);
+        this.isFlipping = !this.initialSide;
+        this.rotations = this.isFlipping ? 1 : 0;
     },
     methods: {
-        flipTo(isFlipping) {
-            this.isFlipping = isFlipping;
-        },
-
         flipCoin() {
             if (this.isDisabled) {
                 return;
             }
 
-            this.isFlipping = this.randomFlip ?
-                Math.random() < 0.5 // Math.random() returns value between 0 and 1
-                :
-                !this.isFlipping;
+            let newIsFlipping;
+            if (this.isRandomFlip) {
+                // Randomly decide the result (true for front, false for back)
+                newIsFlipping = Math.random() < 0.5;
+            } else {
+                // Original behavior: just flip the coin
+                newIsFlipping = !this.isFlipping;
+            }
 
-            this.$emit('flip', this.isFlipping); // emit event and deliver isFlipping value
+            // Determine the number of rotations needed
+            const rotationsNeeded = newIsFlipping === this.isFlipping ? 4 : 3;
+            this.rotations += rotationsNeeded;
+
+            // Update isFlipping after a short delay to allow the animation to start
+            setTimeout(() => {
+                this.isFlipping = newIsFlipping;
+            }, 50);
+
+            // Emit the result (true for front, false for back)
+            this.$emit('flip', !newIsFlipping);
         },
     },
 }
@@ -101,12 +120,7 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.3s;
     transform-style: preserve-3d;
-}
-
-.flipping .coin-inner {
-    transform: rotateY(180deg);
 }
 
 .coin-front,
