@@ -59,6 +59,7 @@
 <script setup>
 import { ref, defineProps } from 'vue';
 import api from '@/services/api';
+import converter from '@/services/converter';
 import FlipCoin from '@/assets/flipCoin/FlipCoin.vue';
 
 const props = defineProps({
@@ -93,7 +94,7 @@ function handleFlipEvent(newState) {
 }
 
 function getFlipResult(result) {
-    return result ? 'Face' : 'Back';
+    return converter.getFlipCoinResultText(result);
 }
 
 function getFlipContent(flip) {

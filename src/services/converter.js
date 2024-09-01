@@ -72,5 +72,9 @@ export default {
 
         return map.get(changeType);
     },
-    
+
+    getFlipCoinResultText(result) {
+        return result ? 'Face' : 'Back';
+    }
+
 }

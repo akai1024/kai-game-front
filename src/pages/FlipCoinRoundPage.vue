@@ -12,7 +12,7 @@
                     <v-card class="my-1 w-100" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
                         <v-card-title class="py-2">
                             <v-chip variant="outlined" class="pa-5 mr-2">
-                                <span class="text-h6">{{ round.roundNumber }}</span>
+                                <span class="text-h6">{{ getRoundTitleContent(round) }}</span>
                             </v-chip>
                             <v-chip v-if="round.participant" variant="elevated" color="yellow-darken-4"
                                 class="flip-scale-up-ver mr-2">
@@ -42,7 +42,8 @@
 
     <v-dialog v-model="data.joinRoundPopup">
         <template v-slot:default="">
-            <JoinRoundPopup :round="data.joinRound" :loginUser="props.loginUser" :userWallet="props.userWallet" :onJoinSuccess="onJoinRoundSuccess" />
+            <JoinRoundPopup :round="data.joinRound" :loginUser="props.loginUser" :userWallet="props.userWallet"
+                :onJoinSuccess="onJoinRoundSuccess" />
         </template>
     </v-dialog>
 </template>
@@ -111,6 +112,11 @@ function getRoundColor(round) {
         return 'green-darken-1';
     }
     return 'primary';
+}
+
+function getRoundTitleContent(round) {
+    return round.settled ? `${round.roundNumber} - ${converter.getFlipCoinResultText(round.flipResult)}`
+        : round.roundNumber;
 }
 
 async function scrollTop() {
