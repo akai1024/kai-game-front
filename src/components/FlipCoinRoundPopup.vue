@@ -39,7 +39,8 @@
                 </v-card-text>
                 <h1 class="d-flex justify-center align-center">$ {{ props.round.prizeAmount }}</h1>
                 <div class="d-flex justify-center align-center">
-                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult" :isRandomFlip="true" />
+                    <FlipCoin @flip="handleFlipEvent" :initialSide="data.joinRoundParam.betFlipResult"
+                        :isRandomFlip="true" />
                     <span>You Bet On {{ getFlipResult(data.joinRoundParam.betFlipResult) }}</span>
                 </div>
                 <v-card-text class="d-flex justify-center align-center">
@@ -47,12 +48,20 @@
                 </v-card-text>
                 <v-card>
                     <v-row class="d-flex align-center">
-                        <v-col cols="8" class="pa-0">
-                            <v-text-field v-model="data.joinRoundParam.flipCount" label="Flip Count" clearable
-                                hide-details type="number"></v-text-field>
+                        <v-col cols="4">
+                            <v-btn color="primary" @click="clickMinusFlipCount" height="50" width="100"
+                                :disabled="disableMinusBtn()">
+                                <v-icon>mdi-minus-circle</v-icon>
+                            </v-btn>
                         </v-col>
                         <v-col cols="4">
-                            <v-btn color="red" @click="resetFlipCount" height="50" width="100">Clear</v-btn>
+                            <v-btn color="primary" @click="clickPlusFlipCount" height="50" width="100"
+                                :disabled="disablePlusBtn()">
+                                <v-icon>mdi-plus-circle</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-btn color="red" @click="clickResetFlipCount" height="50" width="100">Clear</v-btn>
                         </v-col>
                         <v-col cols="8" class="pa-0">
                             <v-text-field v-model="data.joinRoundParam.betAmount" label="Bet Amount" clearable
@@ -78,6 +87,9 @@ import { ref, defineProps } from 'vue';
 import api from '@/services/api';
 import converter from '@/services/converter';
 import FlipCoin from '@/assets/flipCoin/FlipCoin.vue';
+
+const minFlipCount = 0;
+const maxFlipCount = 100;
 
 const props = defineProps({
     round: {
@@ -108,7 +120,11 @@ const data = ref({
 
 function handleFlipEvent(newState) {
     data.value.joinRoundParam.betFlipResult = newState;
-    data.value.joinRoundParam.flipCount++;
+
+    const flipCount = data.value.joinRoundParam.flipCount;
+    if (flipCount < maxFlipCount) {
+        data.value.joinRoundParam.flipCount++;
+    }
 }
 
 function getFlipResult(result) {
@@ -144,7 +160,23 @@ function joinRoundBtnDisabled() {
         !data.value.joinRoundParam.betAmount;
 }
 
-function resetFlipCount() {
+function disableMinusBtn() {
+    return data.value.joinRoundParam.flipCount <= minFlipCount;
+}
+
+function disablePlusBtn() {
+    return data.value.joinRoundParam.flipCount >= maxFlipCount;
+}
+
+function clickMinusFlipCount() {
+    data.value.joinRoundParam.flipCount--;
+}
+
+function clickPlusFlipCount() {
+    data.value.joinRoundParam.flipCount++;
+}
+
+function clickResetFlipCount() {
     data.value.joinRoundParam.flipCount = 0;
 }
 
@@ -161,8 +193,8 @@ async function joinRound() {
     try {
         const request = {
             roundNumber: props.round.roundNumber,
-            flipCount: data.value.joinRoundParam.flipCount,
             betFlipResult: data.value.joinRoundParam.betFlipResult,
+            flipCount: data.value.joinRoundParam.flipCount,
             betAmount: data.value.joinRoundParam.betAmount,
         };
 
