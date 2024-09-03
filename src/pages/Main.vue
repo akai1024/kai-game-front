@@ -13,30 +13,33 @@
                 <v-menu transition="slide-y-transition" :disabled="!data.loginUser">
                     <v-card>
                         <v-tabs v-model="data.mainPageContent" color="primary" direction="vertical">
-                            <v-tab prepend-icon="mdi-nintendo-game-boy" text="Games" value="GamePage"></v-tab>
+                            <v-tab prepend-icon="mdi-nintendo-game-boy" text="Flip Coin" value="FlipCoin"
+                                @click="clickTabFlipCoin"></v-tab>
                             <v-tab prepend-icon="mdi-wallet" text="Balance Records" value="TransactionsPage"></v-tab>
                         </v-tabs>
                     </v-card>
 
                     <template v-slot:activator="{ props }">
-                        <v-chip v-bind="props" class="pa-4 mr-2" prepend-icon="mdi-account-circle" @click="clickUserChip"
-                            :disabled="data.flipCoinRoundsLoading">
+                        <v-chip v-bind="props" class="pa-4 mr-2" prepend-icon="mdi-account-circle"
+                            @click="clickUserChip" :disabled="data.flipCoinRoundsLoading">
                             Hello! {{ getUserName() }}
                         </v-chip>
                     </template>
-                    <UserInfoPopup v-if="data.loginUser" :onDepositSuccess="refreshWallet"
-                        :onLogoutSuccess="onLogoutSuccess" />
+                    <UserInfoDrawer v-if="data.loginUser" :onDepositSuccess="onDepositReqSucc"
+                        :onLogoutSuccess="refreshAll" />
                 </v-menu>
             </v-app-bar>
 
             <v-main>
                 <v-container class="d-flex justify-center" style="max-width: 800px;">
                     <v-tabs-window v-model="data.mainPageContent">
-                        <v-tabs-window-item value="GamePage">
-                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" :userWallet="data.userWallet" :onBetSuccess="refreshWallet"/>
+                        <v-tabs-window-item value="FlipCoin">
+                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" :userWallet="data.userWallet"
+                                :onBetSuccess="refreshWallet" />
                         </v-tabs-window-item>
                         <v-tabs-window-item value="TransactionsPage">
-                            <component :is="TransactionsPage" :loginUser="data.loginUser" :onLoginUserChange="switchMainPageContentToGamePage"/>
+                            <component :is="TransactionsPage" :loginUser="data.loginUser"
+                                :onLoginUserChange="switchMainPageContentToGamePage" />
                         </v-tabs-window-item>
                     </v-tabs-window>
                 </v-container>
@@ -44,9 +47,18 @@
         </v-layout>
     </v-app>
 
+    <v-snackbar v-model="data.snackbar" :timeout="5000">
+        {{ data.snackbarText }}
+        <template v-slot:actions>
+            <v-btn @click="data.snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
+
     <v-dialog persistent v-model="data.loginPopup">
         <template v-slot:default="">
-            <LoginPopup :onCancelClick="onLoginCancelClick" :onLoginSuccess="onLoginSuccess" />
+            <LoginPopup :onCancelClick="onLoginCancelClick" :onLoginSuccess="refreshAll" />
         </template>
     </v-dialog>
 
@@ -56,25 +68,43 @@
 import { ref } from 'vue';
 import api from '@/services/api';
 import LoginPopup from '@/components/LoginPopup.vue';
-import UserInfoPopup from '@/components/UserInfoPopup.vue';
+import UserInfoDrawer from '@/components/UserInfoDrawer.vue';
 import FlipCoinRoundPage from './FlipCoinRoundPage.vue';
 import TransactionsPage from './TransactionsPage.vue';
 
+const FlipCoinPage = 'FlipCoin';
 
 const data = ref({
     loginPopup: false,
     loginUser: null,
     userWallet: null,
-    mainPageContent: 'GamePage',
+    mainPageContent: FlipCoinPage,
+    lastGamePage: FlipCoinPage,
+
+    snackbar: false,
+    snackbarText: '',
 });
 
-onLoginSuccess();
+refreshAll();
 
 function switchMainPageContentToGamePage() {
-    data.value.mainPageContent = 'GamePage';
+    data.value.mainPageContent = data.value.lastGamePage;
+}
+
+function clickTabFlipCoin() {
+    data.value.lastGamePage = FlipCoinPage;
+}
+
+function showSnackBar(content) {
+    if (!content) {
+        return;
+    }
+    data.value.snackbar = true;
+    data.value.snackbarText = content;
 }
 
 async function refreshAll() {
+    refreshLoginUser();
     refreshWallet();
 }
 
@@ -91,7 +121,6 @@ async function refreshWallet() {
         }
     } catch (err) {
         console.error(err);
-        onLoginSuccess();
     }
 }
 
@@ -114,7 +143,7 @@ function onLoginCancelClick() {
     data.value.loginPopup = false;
 }
 
-function onLoginSuccess() {
+function refreshLoginUser() {
     const localStorageUser = JSON.parse(localStorage.getItem('localStorageUser'));
     if (localStorageUser) {
         data.value.loginUser = {
@@ -125,14 +154,10 @@ function onLoginSuccess() {
         data.value.loginUser = null;
     }
     data.value.loginPopup = false;
-
-    refreshAll();
 }
 
-function onLogoutSuccess() {
-    data.value.loginUser = null;
-    data.value.userWallet = null;
-    refreshAll();
+function onDepositReqSucc() {
+    showSnackBar('Deposit Request Submitted !');
 }
 
 </script>

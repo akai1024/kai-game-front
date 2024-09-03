@@ -43,8 +43,8 @@ async function onDepositClick() {
 
     data.value.processDeposit = true;
     try {
-        const result = await api.post('/user/money/deposit', { amount: 10 });
-        if (result && result.traceId) {
+        const result = await api.post('/user/tx/deposit', { amount: 10 });
+        if (result && result.id) {
             if (props.onDepositSuccess) {
                 props.onDepositSuccess();
             }
