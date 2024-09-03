@@ -1,5 +1,5 @@
 {
-  "name": "kai-admin-front",
+  "name": "kai-game-front",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
