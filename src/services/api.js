@@ -3,7 +3,7 @@ import axios from 'axios';
 // 創建一個 axios 實例
 const api = axios.create({
   baseURL: 'http://localhost:8081',
-  timeout: 30000, // 請求超時時間
+  timeout: 5000, // 請求超時時間
   headers: {
     'Content-Type': 'application/json',
     // 如果需要，可以在這裡添加其他默認headers
