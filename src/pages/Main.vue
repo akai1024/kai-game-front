@@ -31,6 +31,9 @@
             </v-app-bar>
 
             <v-main>
+                <v-alert type="error" text="Server is on vacation... :(" v-model="data.serverDown"
+                    @click="sendTestRequest"></v-alert>
+
                 <div class="d-flex justify-center">
                     <v-container class="pa-1">
                         <v-tabs-window v-model="data.mainPageContent">
@@ -45,7 +48,6 @@
                         </v-tabs-window>
                     </v-container>
                 </div>
-
 
             </v-main>
         </v-layout>
@@ -79,6 +81,8 @@ import TransactionsPage from './TransactionsPage.vue';
 const FlipCoinPage = 'FlipCoin';
 
 const data = ref({
+    serverDown: true,
+
     loginPopup: false,
     loginUser: null,
     userWallet: null,
@@ -90,6 +94,17 @@ const data = ref({
 });
 
 refreshAll();
+
+async function sendTestRequest() {
+    try {
+        const result = await api.get('/kai/game/test');
+        if (result) {
+            data.value.serverDown = false;
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 function switchMainPageContentToGamePage() {
     data.value.mainPageContent = data.value.lastGamePage;
