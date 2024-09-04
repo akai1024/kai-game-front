@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto">
+    <v-card class="w-100">
         <v-card-title class="d-flex align-center pa-4">
             <v-icon size="28" class="pa-5 mr-2">mdi-alpha-c-circle</v-icon>
             <span class="text-h6">Flip Coin</span>
@@ -7,7 +7,7 @@
             <v-chip class="pa-5" @click="scrollTop">{{ `Total Rounds: ${data.flipCoinRoundsTotal}` }}</v-chip>
         </v-card-title>
         <ScrollTrigger :topTriggerMethod="scrollTop" :bottomTriggerMethod="scrollPage">
-            <v-list density="compact" class="pa-0" width="400">
+            <v-list density="compact" class="pa-0">
                 <v-list-item v-for="(round, i) in data.flipCoinRounds" :key="i" :value="round" color="primary">
                     <v-card class="my-1 w-100" :color="getRoundColor(round)" @click="onJoinRoundClick(round)">
                         <v-card-title class="py-2">
@@ -40,6 +40,7 @@
             </v-list>
         </ScrollTrigger>
     </v-card>
+
 
     <v-dialog v-model="data.roundPopup" width="380">
         <template v-slot:default="">

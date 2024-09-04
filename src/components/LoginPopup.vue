@@ -1,34 +1,36 @@
 <template>
-    <v-container width="380" class="pa-0">
-        <v-card class="mx-auto" prepend-icon="mdi-account">
-            <template v-slot:title>
-                <span class="font-weight-black">Login</span>
-            </template>
-            <template v-slot:subtitle>
-                <span>Welcome!</span>
-                <v-switch v-model="data.isRegister" color="green" label="Register" hide-details
-                    class="ma-5 position-absolute top-0 right-0"></v-switch>
-            </template>
-            <v-card-text v-if="data.greetings" class="d-flex justify-center align-center">
-                {{ data.greetings }}
-            </v-card-text>
-            <v-card-text>
-                <v-sheet class="mx-auto" width="300">
-                    <v-form @submit.prevent>
-                        <v-text-field v-model="data.inputAccount" :rules="data.accountRules"
-                            label="account"></v-text-field>
-                        <v-text-field v-model="data.inputPassword" :rules="data.passwordRules"
-                            @click:append-inner="data.showPassword = !data.showPassword"
-                            :append-inner-icon="data.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="data.showPassword ? 'text' : 'password'" label="password"></v-text-field>
-                        <v-btn color="primary" type="submit" @click="onMainBtnClick" block class="my-3" height="80"
-                            :disabled="!isLegalLoginForm() || data.autoLoginProcess">{{ getMainBtnLabel() }}</v-btn>
-                        <v-btn color="grey" @click="props.onCancelClick" block class="my-3">Cancel</v-btn>
-                    </v-form>
-                </v-sheet>
-            </v-card-text>
-        </v-card>
-    </v-container>
+    <div class="d-flex justify-center">
+        <v-container width="380" class="pa-0">
+            <v-card class="mx-auto" prepend-icon="mdi-account">
+                <template v-slot:title>
+                    <span class="font-weight-black">Login</span>
+                </template>
+                <template v-slot:subtitle>
+                    <span>Welcome!</span>
+                    <v-switch v-model="data.isRegister" color="green" label="Register" hide-details
+                        class="ma-5 position-absolute top-0 right-0"></v-switch>
+                </template>
+                <v-card-text v-if="data.greetings" class="d-flex justify-center align-center">
+                    {{ data.greetings }}
+                </v-card-text>
+                <v-card-text>
+                    <v-sheet class="mx-auto" width="300">
+                        <v-form @submit.prevent>
+                            <v-text-field v-model="data.inputAccount" :rules="data.accountRules"
+                                label="account"></v-text-field>
+                            <v-text-field v-model="data.inputPassword" :rules="data.passwordRules"
+                                @click:append-inner="data.showPassword = !data.showPassword"
+                                :append-inner-icon="data.showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                                :type="data.showPassword ? 'text' : 'password'" label="password"></v-text-field>
+                            <v-btn color="primary" type="submit" @click="onMainBtnClick" block class="my-3" height="80"
+                                :disabled="!isLegalLoginForm() || data.autoLoginProcess">{{ getMainBtnLabel() }}</v-btn>
+                            <v-btn color="grey" @click="props.onCancelClick" block class="my-3">Cancel</v-btn>
+                        </v-form>
+                    </v-sheet>
+                </v-card-text>
+            </v-card>
+        </v-container>
+    </div>
 </template>
 
 <script setup>
@@ -90,12 +92,12 @@ async function onMainBtnClick() {
                 const token = result ? result.token : null;
                 if (token) {
                     localStorage.setItem('localStorageUser', JSON.stringify(
-                        { 
-                            account: inputAccount, 
+                        {
+                            account: inputAccount,
                             userId: result.userId,
-                            loginToken: token, 
+                            loginToken: token,
                             loginTokenExpiredTime: result.expiredTime,
-                         }));
+                        }));
                 }
             }
 

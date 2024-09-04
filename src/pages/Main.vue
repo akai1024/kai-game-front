@@ -3,9 +3,9 @@
         <v-layout>
             <v-app-bar>
                 <v-app-bar-nav-icon @click="switchMainPageContentToGamePage">
-                    <v-icon icon="mdi-nintendo-game-boy" class="pa-5"></v-icon>
+                    <v-icon icon="mdi-nintendo-game-boy" class="pa-1"></v-icon>
                 </v-app-bar-nav-icon>
-                <v-toolbar-title>Kai Games</v-toolbar-title>
+                <v-toolbar-title class="ml-0">Kai Games</v-toolbar-title>
                 <v-chip v-if="data.loginUser" class="pa-4 mr-1" prepend-icon="mdi-gold" @click="refreshWallet">
                     {{ getWalletBalance() }}
                 </v-chip>
@@ -31,18 +31,22 @@
             </v-app-bar>
 
             <v-main>
-                <v-container class="d-flex justify-center" style="max-width: 800px;">
-                    <v-tabs-window v-model="data.mainPageContent">
-                        <v-tabs-window-item value="FlipCoin">
-                            <component :is="FlipCoinRoundPage" :loginUser="data.loginUser" :userWallet="data.userWallet"
-                                :onBetSuccess="refreshWallet" />
-                        </v-tabs-window-item>
-                        <v-tabs-window-item value="TransactionsPage">
-                            <component :is="TransactionsPage" :loginUser="data.loginUser"
-                                :onLoginUserChange="switchMainPageContentToGamePage" />
-                        </v-tabs-window-item>
-                    </v-tabs-window>
-                </v-container>
+                <div class="d-flex justify-center">
+                    <v-container class="pa-1">
+                        <v-tabs-window v-model="data.mainPageContent">
+                            <v-tabs-window-item value="FlipCoin">
+                                <component :is="FlipCoinRoundPage" :loginUser="data.loginUser"
+                                    :userWallet="data.userWallet" :onBetSuccess="refreshWallet" />
+                            </v-tabs-window-item>
+                            <v-tabs-window-item value="TransactionsPage">
+                                <component :is="TransactionsPage" :loginUser="data.loginUser"
+                                    :onLoginUserChange="switchMainPageContentToGamePage" />
+                            </v-tabs-window-item>
+                        </v-tabs-window>
+                    </v-container>
+                </div>
+
+
             </v-main>
         </v-layout>
     </v-app>
