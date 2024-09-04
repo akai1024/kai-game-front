@@ -81,7 +81,7 @@ import TransactionsPage from './TransactionsPage.vue';
 const FlipCoinPage = 'FlipCoin';
 
 const data = ref({
-    serverDown: true,
+    serverDown: false,
 
     loginPopup: false,
     loginUser: null,
@@ -96,14 +96,16 @@ const data = ref({
 refreshAll();
 
 async function sendTestRequest() {
+    let isServerDown = true;
     try {
         const result = await api.get('/kai/game/test');
         if (result) {
-            data.value.serverDown = false;
+            isServerDown = false;
         }
     } catch (err) {
         console.error(err);
     }
+    data.value.serverDown = isServerDown;
 }
 
 function switchMainPageContentToGamePage() {
@@ -123,6 +125,7 @@ function showSnackBar(content) {
 }
 
 async function refreshAll() {
+    sendTestRequest();
     refreshLoginUser();
     refreshWallet();
 }
