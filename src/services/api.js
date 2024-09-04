@@ -1,8 +1,9 @@
 import axios from 'axios';
+const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
 // 創建一個 axios 實例
 const api = axios.create({
-  baseURL: 'http://localhost:8081',
+  baseURL: apiEndpoint,
   timeout: 5000, // 請求超時時間
   headers: {
     'Content-Type': 'application/json',
