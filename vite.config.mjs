@@ -11,7 +11,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // base:'/kai-game-front/',
+  base:'/kai-game-front/',
   plugins: [
     VueRouter(),
     Vue({
