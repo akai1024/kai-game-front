@@ -1,7 +1,7 @@
 {
   "name": "kai-game-front",
   "version": "0.0.0",
-  "homepage": "https://akai1024.github.io/kai-game-front/",
+  "homepage": "https://kaigame.fun",
   "scripts": {
     "predeploy" : "npm run build",
     "deploy" : "gh-pages -d dist",
