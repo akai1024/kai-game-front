@@ -22,7 +22,7 @@
                     <template v-slot:activator="{ props }">
                         <v-chip v-bind="props" class="pa-4 mr-2" prepend-icon="mdi-account-circle"
                             @click="clickUserChip" :disabled="data.flipCoinRoundsLoading">
-                            Hello! {{ getUserName() }}
+                            {{ getUserName() }}
                         </v-chip>
                     </template>
                     <UserInfoDrawer v-if="data.loginUser" :onDepositSuccess="onDepositReqSucc"
