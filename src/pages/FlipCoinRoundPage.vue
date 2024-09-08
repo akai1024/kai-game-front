@@ -55,6 +55,7 @@
 <script setup>
 import { ref, defineProps, watch } from 'vue';
 import api from '@/services/api';
+import commonApi from '@/services/commonApi';
 import converter from '@/services/converter';
 import FlipCoinRoundPopup from '@/components/FlipCoinRoundPopup.vue';
 import ScrollTrigger from '@/components/ScrollTrigger.vue';
@@ -81,6 +82,8 @@ watch(() => props.loginUser, (loginUser) => {
 });
 
 const data = ref({
+    flipCoinConfig: null,
+
     flipCoinRoundsLoading: false,
     flipCoinRoundsPageSize: 5,
     flipCoinRoundsTotal: 0,
@@ -89,6 +92,8 @@ const data = ref({
     round: null,
     roundPopup: false,
 });
+
+refreshConfig();
 
 function getDateText(timestamp) {
     return converter.transferFromTimestamp(timestamp);
@@ -133,6 +138,17 @@ async function scrollPage() {
         return;
     }
     searchFlipCoinRounds(false);
+}
+
+async function refreshConfig() {
+    try {
+        const result = await commonApi.getConfig('FLIP_COIN_SETTINGS');
+        if (result) {
+            data.value.flipCoinConfig = result;
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 async function searchFlipCoinRounds(isRefreshTop) {
