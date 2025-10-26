@@ -10,7 +10,7 @@ export default {
     passwordRules: [
         value => {
             if (/^[a-zA-Z0-9]{6,32}$/.test(value)) return true
-            return 'password must be 3-32 characters.'
+            return 'password must be 6-32 characters.'
         },
     ],
 

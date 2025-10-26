@@ -69,17 +69,19 @@ watch(() => props.loginUser, (loginUser) => {
     if (props.onLoginUserChange) {
         props.onLoginUserChange();
     }
+
+    if (loginUser) {
+        searchTransactions(true);
+    }
 });
 
 const data = ref({
-    loading: true,
+    loading: false,
     itemsPerPage: 0,
     page: 1,
     totalItems: 0,
     transactions: [],
 });
-
-searchTransactions(true);
 
 function getDateText(timestamp) {
     return converter.transferFromTimestamp(timestamp);
@@ -109,6 +111,10 @@ async function scrollPage() {
 }
 
 async function searchTransactions(isRefreshTop) {
+    if (data.value.loading) {
+        return;
+    }
+
     data.value.loading = true;
 
     try {

@@ -21,7 +21,7 @@
                         <FlipCoin :isDisabled="true" :initialSide="props.round.participant.betResult" />
                     </div>
                     <v-card-text class="d-flex justify-center align-center">
-                        and paid ${{ props.round.participant.betAmount }} to bet the result will be
+                        and paid ${{ props.round.participant.betAmount }} to bet the result:
                         {{ getFlipResult(props.round.participant.betResult) }}
                     </v-card-text>
                     <v-card-text v-if="props.round.settled && props.round.participant.winAmount > 0"
